@@ -870,7 +870,7 @@
 </script>
 
 </body>
-</html>// Función para iniciar sesión
+</html><script>
 async function ingresar() {
     const email = document.getElementById('correo').value;
     const password = document.getElementById('password').value;
@@ -885,14 +885,16 @@ async function ingresar() {
     const data = await res.json();
 
     if (res.ok) {
-        // Guardamos el token en el navegador
         localStorage.setItem('token', data.token);
         
-        // Cambiamos el contenido para mostrar la bienvenida y el botón de cerrar sesión
-        document.querySelector('.login-card').innerHTML = `
-            <h2>¡Bienvenido, ${data.usuario.nombre}!</h2>
-            <p>Puesto: ${data.usuario.puesto}</p>
-            <button onclick="cerrarSesion()" style="background-color: #d9534f; margin-top: 15px;">Cerrar Sesión</button>
+        // Muestra el mensaje respetando la tarjeta y añade el botón amarillo
+        respuestaDiv.style.color = "#1f104f";
+        respuestaDiv.innerHTML = `
+            <div style="margin-top: 15px; padding: 10px; border-top: 1px solid #eee;">
+                <p style="font-weight: bold; margin-bottom: 5px;">¡Bienvenido, ${data.usuario.nombre}!</p>
+                <p style="font-size: 14px; color: #666; margin-bottom: 15px;">${data.usuario.puesto}</p>
+                <button onclick="salir()" style="background-color: #ffc107; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%;">Salir</button>
+            </div>
         `;
     } else {
         respuestaDiv.style.color = "red";
@@ -900,8 +902,8 @@ async function ingresar() {
     }
 }
 
-// Función para cerrar sesión
-function cerrarSesion() {
+function salir() {
     localStorage.removeItem('token');
-    window.location.reload(); // Recarga la página para volver al inicio
+    window.location.reload();
 }
+</script>
