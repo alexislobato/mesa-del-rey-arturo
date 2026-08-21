@@ -3,338 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H-UVA Consulting - Sistema de Evaluación 360°</title>
+    <title>H-UVA Coaching & Consultants - La Mesa del Rey Arturo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0f172a; font-family: 'Lato', sans-serif; color: #334155; line-height: 1.5; }
-        
-        /* App Layout Container */
-        .app-container { display: flex; height: 100vh; width: 100vw; overflow: hidden; }
-        
-        /* Sidebar Navigation */
-        .sidebar { width: 280px; background-color: #003358; color: white; display: flex; flex-direction: column; border-right: 1px solid #1e293b; flex-shrink: 0; }
-        .sidebar-header { padding: 25px 20px; background-color: #00223e; border-bottom: 1px solid #004070; }
-        .sidebar-header h2 { font-family: 'Poppins', sans-serif; font-size: 18px; color: #11caa0; }
-        .sidebar-header p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
-        
-        .sidebar-menu { list-style: none; padding: 20px 0; flex-grow: 1; overflow-y: auto; }
-        .sidebar-menu li { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 15px; color: #cbd5e1; transition: all 0.3s; border-left: 4px solid transparent; }
-        .sidebar-menu li:hover { background-color: #004070; color: white; }
-        .sidebar-menu li.active { background-color: #004f85; color: white; border-left-color: #11caa0; font-weight: bold; }
-        .sidebar-menu li i { width: 20px; text-align: center; color: #11caa0; }
-        
-        .sidebar-footer { padding: 15px 20px; background-color: #00223e; font-size: 12px; color: #94a3b8; border-top: 1px solid #004070; }
+        body { 
+            background-color: #f8f9fa; 
+            font-family: 'Lato', sans-serif; 
+            color: #333333; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-        /* Main Workspace Content Area */
-        .main-content { flex-grow: 1; background-color: #f8fafc; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; }
-        
-        .view-panel { display: none; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 30px; min-height: calc(100vh - 100px); }
-        .view-panel.active { display: block; }
-        
-        h1, h2, h3 { font-family: 'Poppins', sans-serif; color: #003358; }
-        .panel-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
-        .panel-title i { color: #11caa0; }
+        /* Decorative Background Elements matching the user's screenshot */
+        .bg-circle-1 {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 250px;
+            height: 250px;
+            background-color: #e2e0ea;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.7;
+        }
+        .bg-circle-2 {
+            position: absolute;
+            top: 60px;
+            right: 80px;
+            width: 120px;
+            height: 120px;
+            background-color: #fdf5d8;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        .bg-circle-3 {
+            position: absolute;
+            bottom: -30px;
+            left: 80px;
+            width: 150px;
+            height: 150px;
+            background-color: #e2e0ea;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.7;
+        }
+        .bg-circle-4 {
+            position: absolute;
+            bottom: -50px;
+            right: -30px;
+            width: 280px;
+            height: 280px;
+            background-color: #fdf5d8;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.8;
+        }
 
-        /* Component Styles */
-        .table-layout { width: 100%; overflow-x: auto; margin-top: 15px; }
-        .table-layout table { border-collapse: collapse; width: 100%; }
-        .table-layout th, .table-layout td { border-bottom: 1px solid #e2e8f0; padding: 14px 18px; text-align: left; font-size: 15px; }
-        .table-layout th { background-color: #f1f5f9; color: #003358; font-family: 'Poppins', sans-serif; font-size: 16px; }
-        
-        .badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 700; }
-        .progress-bar-bg { background-color: #e2e8f0; border-radius: 6px; height: 10px; width: 100%; overflow: hidden; }
-        .progress-bar-fill { background-color: #11caa0; height: 100%; border-radius: 6px; }
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            z-index: 10;
+        }
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-img {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #1a1a2e;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .logo-img span {
+            color: #6c5ce7;
+        }
+        .logo-subtitle {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #555;
+            text-transform: uppercase;
+        }
+        .header-title-area {
+            text-align: center;
+        }
+        .header-title-area h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .header-title-area p {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
 
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 15px; }
-        .tile { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; display: flex; flex-direction: column; gap: 12px; }
-        .tile h3 { font-size: 18px; color: #003358; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
-        .form-group label { font-weight: 700; color: #334155; font-size: 14px; }
-        .form-control { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; font-size: 15px; width: 100%; }
-        .btn-primary { background-color: #005088; color: white; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .btn-primary:hover { background-color: #003358; }
-        .link-box { background: #e0f2fe; border: 1px dashed #0284c7; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; color: #0369a1; word-break: break-all; margin-top: 5px; }
+        /* Main Container / Login Box */
+        .main-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            z-index: 10;
+            padding: 20px;
+        }
+        .login-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .login-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #fafafa;
+        }
+        .form-control:focus {
+            border-color: #1a1a2e;
+            background-color: #fff;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #2c2c4a;
+        }
 
-        .johari-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; height: 320px; }
-        .johari-box { background: #f8fafc; border: 2px solid #005088; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
-        .johari-box.highlight { background: #005088; color: #fff; }
-        .johari-box.highlight h4, .johari-box.highlight p { color: #fff; }
-        .johari-box h4 { font-size: 16px; margin-bottom: 6px; color: #005088; }
-        .johari-box p { font-size: 13px; line-height: 1.3; color: #475569; }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 12px;
+            color: #444;
+            z-index: 10;
+            background: transparent;
+        }
+        footer span {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
 
-        .quote-box { background: #e0f2fe; border-left: 5px solid #005088; padding: 20px; border-radius: 0 10px 10px 0; margin-top: 25px; }
-        .quote-box p { font-style: italic; font-size: 17px; color: #003358; font-weight: bold; margin-bottom: 6px; }
-        .quote-box cite { font-size: 13px; color: #475569; font-style: normal; }
-
-        .chart-container { display: flex; flex-direction: column; gap: 12px; }
-        .bar { align-items: center; display: flex; gap: 15px; }
-        .bar .label { color: #334155; flex: 0 0 160px; font-weight: 700; font-size: 14px; text-align: right; }
-        .bar .bar-inner { background-color: #e2e8f0; border-radius: 6px; flex-grow: 1; height: 28px; }
-        .bar .bar-fill { border-radius: 6px; color: white; display: flex; font-size: 14px; font-weight: 700; height: 100%; justify-content: flex-end; align-items: center; padding-right: 12px; background-color: #005088; }
+        @media(max-width: 768px) {
+            header { flex-direction: column; gap: 15px; padding: 20px; text-align: center; }
+            .header-title-area { display: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Sidebar / Tab Navigation -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>H-UVA Consulting</h2>
-            <p>Plataforma Interactiva 360°</p>
+    <!-- Decorative background elements -->
+    <div class="bg-circle-1"></div>
+    <div class="bg-circle-2"></div>
+    <div class="bg-circle-3"></div>
+    <div class="bg-circle-4"></div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-img">h·uva<span>.</span></div>
+            <div class="logo-subtitle">Coaching & Consultants</div>
         </div>
-        <ul class="sidebar-menu">
-            <li class="active" onclick="switchTab('tab-admin', this)"><i class="fa-solid fa-gauge"></i> Panel de Administración</li>
-            <li onclick="switchTab('tab-registro', this)"><i class="fa-solid fa-link"></i> Registro y Enlaces</li>
-            <li onclick="switchTab('tab-johari', this)"><i class="fa-solid fa-book-open"></i> Cuadernillo / Johari</li>
-            <li onclick="switchTab('tab-reyarturo', this)"><i class="fa-solid fa-shield-halved"></i> Mesa del Rey Arturo</li>
-            <li onclick="switchTab('tab-reporte', this)"><i class="fa-solid fa-chart-bar"></i> Rasgos y Liderazgo</li>
-            <li onclick="switchTab('tab-cierre', this)"><i class="fa-solid fa-square-poll-vertical"></i> Evaluación y Cierre</li>
-        </ul>
-        <div class="sidebar-footer">
-            Soporte: hvazquez@h-uva.com<br>Tel: 33 1340 4958
+        <div class="header-title-area">
+            <h1>La Mesa del Rey Arturo</h1>
+            <p>Dinámica de Feedback 360°</p>
+        </div>
+        <div style="width: 140px;"></div> <!-- Spacer for balance -->
+    </header>
+
+    <!-- Main Content / Login Form -->
+    <div class="main-wrapper">
+        <div class="login-card">
+            <h2>Acceso Administrativo</h2>
+            <form onsubmit="event.preventDefault(); alert('Bienvenido al sistema H-UVA 360°');">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" class="form-control" placeholder="usuario@h-uva.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
         </div>
     </div>
 
-    <!-- Main Content Workspace -->
-    <div class="main-content">
-
-        <!-- 1. Panel de Administración -->
-        <div id="tab-admin" class="view-panel active">
-            <h2 class="panel-title"><i class="fa-solid fa-gauge"></i> 1. Panel de Administración General</h2>
-            <p style="margin-bottom: 20px; color: #64748b;">Monitoreo en tiempo real de los procesos de evaluación 360° asignados a líderes corporativos.</p>
-            <div class="table-layout">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Líder</th>
-                            <th>Empresa</th>
-                            <th>Evaluadores</th>
-                            <th>Avance Global</th>
-                            <th>Fecha de Implementación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Carlos Mendoza</strong></td>
-                            <td>Tecnologías Innovadoras S.A.</td>
-                            <td><span class="badge">8 evaluadores</span></td>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 75%;"></div></div>
-                                    <span style="font-size: 14px; font-weight: bold;">75%</span>
-                                </div>
-                            </td>
-                            <td>12 / Octubre / 2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ana Sofía Garza</strong></td>
-                            <td>Corporativo Financiero del Norte</td>
-                            <td><span class="badge">12 evaluadores</span></td>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 40%;"></div></div>
-                                    <span style="font-size: 14px; font-weight: bold;">40%</span>
-                                </div>
-                            </td>
-                            <td>18 / Octubre / 2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Roberto Sánchez</strong></td>
-                            <td>Logística Global Express</td>
-                            <td><span class="badge">6 evaluadores</span></td>
-                            <td>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 90%;"></div></div>
-                                    <span style="font-size: 14px; font-weight: bold;">90%</span>
-                                </div>
-                            </td>
-                            <td>01 / Noviembre / 2026</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 2. Registro / Enlaces Dinámicos -->
-        <div id="tab-registro" class="view-panel">
-            <h2 class="panel-title"><i class="fa-solid fa-link"></i> 2. Registro y Enlaces Dinámicos</h2>
-            <div class="two-column">
-                <div class="tile">
-                    <h3>Generación de Enlaces de Evaluación</h3>
-                    <div class="form-group">
-                        <label>Nombre del Líder:</label>
-                        <input type="text" class="form-control" value="Carlos Mendoza" id="inputLider">
-                    </div>
-                    <div class="form-group">
-                        <label>Empresa:</label>
-                        <input type="text" class="form-control" value="Tecnologías Innovadoras S.A." id="inputEmpresa">
-                    </div>
-                    <button class="btn-primary" onclick="generarEnlace()">Actualizar / Generar Enlace</button>
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label>Enlace Dinámico Activo:</label>
-                        <div class="link-box" id="linkGenerado">https://h-uva.com/evaluacion/carlos-mendoza-tech2026</div>
-                    </div>
-                </div>
-                <div class="tile">
-                    <h3>Experiencia del Evaluador</h3>
-                    <p>Al acceder al enlace, el evaluador ingresa de forma intuitiva sus datos para iniciar el cuestionario psicométrico y de competencias:</p>
-                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-                        <li><strong>Nombre completo</strong> del evaluador.</li>
-                        <li><strong>Puesto o rol</strong> actual dentro de la organización.</li>
-                        <li><strong>Relación con el participante:</strong> Jefe, Par, Colaborador, RH o Cliente Interno.</li>
-                        <li>Acceso inmediato a la interfaz de reactivos de liderazgo 360°.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Cuadernillo / Cuadrante de Johari -->
-        <div id="tab-johari" class="view-panel">
-            <h2 class="panel-title"><i class="fa-solid fa-book-open"></i> 3. Cuadernillo: Cuadrante III (Área Ciega)</h2>
-            <div class="two-column">
-                <div>
-                    <h3 style="color:#003358; font-size:20px; margin-bottom:12px;">El Feedback y la Ventana de Johari</h3>
-                    <p style="margin-bottom: 10px;">El <strong>Área Ciega</strong> comprende aquellos aspectos de nuestra conducta o expresión que los demás perciben claramente, pero de los cuales nosotros no somos conscientes.</p>
-                    <p style="margin-bottom: 10px;">Recopilar feedback honesto a través de una evaluación 360° reduce este cuadrante, alineando la autopercepción con la realidad ejecutiva.</p>
-                    <div class="quote-box" style="margin-top: 15px;">
-                        <p>Exportación automática a Excel o Google Sheets con el desglose exacto de reactivos y respuestas.</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="johari-grid">
-                        <div class="johari-box">
-                            <h4>I. Área Abierta</h4>
-                            <p>Conocido por uno mismo y por los demás.</p>
-                        </div>
-                        <div class="johari-box">
-                            <h4>II. Área Oculta</h4>
-                            <p>Conocido por uno mismo, oculto a los demás.</p>
-                        </div>
-                        <div class="johari-box highlight">
-                            <h4>III. Área Ciega</h4>
-                            <p>Visto por los demás, ignorado por uno mismo (Foco 360°).</p>
-                        </div>
-                        <div class="johari-box">
-                            <h4>IV. Área Desconocida</h4>
-                            <p>Inconsciente para ambos.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Mesa del Rey Arturo -->
-        <div id="tab-reyarturo" class="view-panel">
-            <h2 class="panel-title"><i class="fa-solid fa-shield-halved"></i> 4. Reporte Final: La Mesa del Rey Arturo</h2>
-            <p style="margin-bottom: 20px; color: #64748b;">Principios fundamentales para una retroalimentación constructiva y de alto impacto organizacional.</p>
-            <div class="two-column">
-                <div class="tile">
-                    <i class="fa-solid fa-bullseye" style="color: #005088; font-size: 22px;"></i>
-                    <h3>1. Sé específico</h3>
-                    <p>Evita generalidades. Céntrate en comportamientos observables y situaciones concretas para facilitar planes de mejora precisos.</p>
-                </div>
-                <div class="tile">
-                    <i class="fa-solid fa-lightbulb" style="color: #005088; font-size: 22px;"></i>
-                    <h3>2. Acompaña con ideas</h3>
-                    <p>El feedback no aporta valor si no va acompañado de sugerencias constructivas y alternativas viables de desarrollo.</p>
-                </div>
-                <div class="tile">
-                    <i class="fa-solid fa-user-gear" style="color: #005088; font-size: 22px;"></i>
-                    <h3>3. Céntrate en lo que hace</h3>
-                    <p>Evalúa el desempeño laboral y las acciones ejecutivas, nunca los rasgos de la personalidad intrínseca de la persona.</p>
-                </div>
-                <div class="tile">
-                    <i class="fa-solid fa-bolt" style="color: #005088; font-size: 22px;"></i>
-                    <h3>4. Ve al grano</h3>
-                    <p>Expresa las oportunidades de crecimiento con total claridad y profesionalismo, sin rodeos innecesarios.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Rasgos y Liderazgo -->
-        <div id="tab-reporte" class="view-panel">
-            <h2 class="panel-title"><i class="fa-solid fa-chart-bar"></i> 5. Reporte de Rasgos de Personalidad y Liderazgo</h2>
-            <div class="two-column">
-                <div class="tile">
-                    <h3>3 Rasgos de Personalidad Prioritarios</h3>
-                    <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
-                        <li><strong>1. Abierto / Comunicativo:</strong> Alta disposición para conectar y colaborar con los equipos de trabajo.</li>
-                        <li><strong>2. Emocionalmente Estable:</strong> Capacidad de mantener la calma y afrontar con madurez escenarios complejos.</li>
-                        <li><strong>3. Integrado / Autodisciplinado:</strong> Estricto apego a normas constructivas y control de su imagen profesional.</li>
-                    </ul>
-                </div>
-                <div class="chart-container" style="justify-content: center;">
-                    <h3 style="font-size:18px; color:#003358; margin-bottom: 5px;">4 Rasgos de Liderazgo Priorizados</h3>
-                    <div class="bar">
-                        <div class="label">Previsión</div>
-                        <div class="bar-inner"><div class="bar-fill" style="width: 85%;">8.5 / 10</div></div>
-                    </div>
-                    <div class="bar">
-                        <div class="label">Asertividad</div>
-                        <div class="bar-inner"><div class="bar-fill" style="width: 90%;">9.0 / 10</div></div>
-                    </div>
-                    <div class="bar">
-                        <div class="label">Empatía</div>
-                        <div class="bar-inner"><div class="bar-fill" style="width: 80%;">8.0 / 10</div></div>
-                    </div>
-                    <div class="bar">
-                        <div class="label">Excelente Comunicación</div>
-                        <div class="bar-inner"><div class="bar-fill" style="width: 88%;">8.8 / 10</div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 6. Evaluación y Cierre -->
-        <div id="tab-cierre" class="view-panel">
-            <h2 class="panel-title"><i class="fa-solid fa-square-poll-vertical"></i> 6. Evaluación del Proceso y Conclusión</h2>
-            <div class="two-column">
-                <div class="tile">
-                    <h3>Evaluación del Proceso & Recomendaciones</h3>
-                    <p>El proceso demostró altos índices de participación y objetividad en las evaluaciones de los evaluadores. Se recomienda dar seguimiento trimestral a los planes de acción generados en el área ciega.</p>
-                </div>
-                <div class="tile">
-                    <h3>Conclusión del Proceso 360°</h3>
-                    <p>La integración de la dinámica de feedback permite al líder alinear su autopercepción con la realidad del equipo, potenciando su efectividad ejecutiva y la cohesión organizacional.</p>
-                </div>
-            </div>
-            <div class="quote-box">
-                <p>"Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."</p>
-                <cite>— Henry Ford | H-UVA Coaching & Consulting (hvazquez@h-uva.com | 33 1340 4958)</cite>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    function switchTab(tabId, element) {
-        // Hide all views
-        const panels = document.querySelectorAll('.view-panel');
-        panels.forEach(panel => panel.classList.remove('active'));
-        
-        // Remove active class from menu items
-        const menuItems = document.querySelectorAll('.sidebar-menu li');
-        menuItems.forEach(item => item.classList.remove('active'));
-        
-        // Show selected tab and activate menu item
-        document.getElementById(tabId).classList.add('active');
-        element.classList.add('active');
-    }
-
-    function generarEnlace() {
-        const lider = document.getElementById('inputLider').value.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const empresa = document.getElementById('inputEmpresa').value.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const enlace = `https://h-uva.com/evaluacion/${lider}-${empresa}2026`;
-        document.getElementById('linkGenerado').innerText = enlace;
-    }
-</script>
+    <!-- Footer Section -->
+    <footer>
+        hvazquez@h-uva.com | 33 1340 4958<br>
+        H-UVA Coaching & Consulting
+    </footer>
 
 </body>
 </html>
-```eof
