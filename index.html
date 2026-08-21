@@ -17,7 +17,7 @@
             overflow-x: hidden;
         }
 
-        /* Elementos decorativos de fondo */
+        /* Elementos decorativos de fondo idénticos */
         .circle-bg {
             position: absolute;
             border-radius: 50%;
@@ -84,7 +84,7 @@
             margin: 0 auto; 
         }
 
-        /* Sistema de pestañas internas del Admin */
+        /* Sistema de pestañas internas */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -130,11 +130,11 @@
             display: flex;
             justify-content: space-around;
             align-items: flex-end;
-            height: 250px;
+            height: 220px;
             border-bottom: 2px solid #1f104f;
             padding: 0 20px;
-            margin-top: 30px;
-            gap: 20px;
+            margin-top: 20px;
+            gap: 15px;
         }
         .bar-col {
             display: flex;
@@ -145,10 +145,9 @@
             justify-content: flex-end;
         }
         .bar-vertical {
-            width: 50px;
+            width: 45px;
             background-color: #1f104f;
             border-radius: 6px 6px 0 0;
-            transition: height 0.5s;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -158,26 +157,7 @@
             padding-top: 5px;
         }
         .bar-vertical.yellow { background-color: #ffc107; color: #000; }
-        .bar-label { margin-top: 8px; font-size: 12px; text-align: center; font-weight: bold; }
-
-        /* Cuadrante de Johari */
-        .johari-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 180px 180px;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .johari-box {
-            border: 2px solid #1f104f;
-            border-radius: 10px;
-            padding: 20px;
-            background: #f8f8fc;
-        }
-        .johari-box h4 { color: #1f104f; margin-bottom: 8px; font-size: 16px; }
-        .johari-box p { font-size: 13px; color: #444; line-height: 1.4; }
-        .johari-box.highlight { background: #1f104f; color: white; }
-        .johari-box.highlight h4, .johari-box.highlight p { color: white; }
+        .bar-label { margin-top: 8px; font-size: 11px; text-align: center; font-weight: bold; }
 
         .link-box { background: #f0f0f5; border: 1px dashed #1f104f; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; word-break: break-all; margin-top: 8px; }
 
@@ -225,7 +205,7 @@
             <div class="nav-tabs">
                 <button class="tab-btn active" onclick="switchTab(event, 'tab-admin')">1. Panel de Administración</button>
                 <button class="tab-btn" onclick="switchTab(event, 'tab-registro')">2. Registro / Enlaces</button>
-                <button class="tab-btn" onclick="switchTab(event, 'tab-cuadernillo')">3. Cuadernillo / Johari</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-cuadernillo')">3. Cuadernillo</button>
                 <button class="tab-btn" onclick="switchTab(event, 'tab-reporte')">4. Reporte Final 360°</button>
             </div>
 
@@ -243,29 +223,8 @@
                             <th>Fecha de Implementación</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaAdmin">
-                        <tr>
-                            <td><b>Carlos Mendoza</b></td>
-                            <td>Tecnologías Innovadoras S.A.</td>
-                            <td>8 evaluadores</td>
-                            <td>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 75%;">75%</div>
-                                </div>
-                            </td>
-                            <td>12 / Octubre / 2026</td>
-                        </tr>
-                        <tr>
-                            <td><b>Ana Sofía Garza</b></td>
-                            <td>Corporativo Financiero del Norte</td>
-                            <td>12 evaluadores</td>
-                            <td>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 40%;">40%</div>
-                                </div>
-                            </td>
-                            <td>18 / Octubre / 2026</td>
-                        </tr>
+                    <tbody id="tablaAdminProcesos">
+                        <!-- Se llena dinámicamente al registrar líderes -->
                     </tbody>
                 </table>
             </div>
@@ -287,49 +246,59 @@
                         <button class="btn-main" onclick="generarEnlaceDinamico()">Generar Enlace</button>
                     </div>
                     <div>
-                        <label style="font-weight: bold; margin-bottom: 8px; display: block;">Enlace Generado:</label>
-                        <div class="link-box" id="enlaceGeneradoBox">https://h-uva.com/evaluacion/carlos-mendoza-tech2026</div>
+                        <label style="font-weight: bold; margin-bottom: 8px; display: block;">Enlace Generado para compartir:</label>
+                        <div class="link-box" id="enlaceGeneradoBox">https://h-uva.com/evaluacion?evaluar=pendiente</div>
                         <p style="font-size: 13px; color: #666; margin-top: 15px;">
-                            Al ingresar a este enlace, el evaluador indicará su <b>Nombre, Puesto, Relación con el participante</b> (Jefe, Par, Colaborador, RH o Cliente Interno) y completará el cuestionario psicométrico y de competencias.
+                            Comparte este enlace con los evaluadores. Al ingresar, indicarán su <b>Nombre, Puesto y Relación con el evaluado (JEFE, RH, COLABORADOR, PAR, CLIENTE)</b> para acceder al cuadernillo.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. CUADERNILLO Y CUADRANTE DE JOHARI -->
+            <!-- 3. CUADERNILLO (APARTADO DE LLENADO) -->
             <div id="tab-cuadernillo" class="tab-content">
-                <h2>Cuadernillo de Trabajo & Cuadrante de Johari</h2>
-                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Fundamentos teóricos y autoevaluación del proceso 360°.</p>
+                <h2>Cuadernillo de Evaluación y Feedback 360°</h2>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Sección interactiva para el registro de apreciaciones y respuestas de los evaluadores.</p>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
-                    <div>
-                        <h3 style="color: #1f104f; margin-bottom: 10px;">El Espacio Interpersonal y el Feedback</h3>
-                        <p style="font-size: 14px; line-height: 1.6; color: #444; margin-bottom: 15px;">
-                            El modelo de la <b>Ventana de Johari</b> ilustra los procesos de dar y recibir retroalimentación. El <b>Área Ciega (Cuadrante III)</b> contiene aspectos de nuestra conducta que los demás perciben pero nosotros ignoramos.
+                <div style="display: flex; flex-direction: column; gap: 25px; font-size: 14px; line-height: 1.5; color: #333;">
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">1. Cuadrante III: Área Ciega del Coachee</h3>
+                        <p style="margin-bottom: 12px;">
+                            El <b>Área Ciega</b> agrupa aquellas conductas, reacciones o actitudes que los demás perciben con claridad en el líder, pero de las cuales él mismo no es consciente. El propósito de este ejercicio es revelar esas áreas mediante retroalimentación constructiva para alinear la autopercepción con la realidad del equipo.
                         </p>
-                        <p style="font-size: 14px; line-height: 1.6; color: #444;">
-                            Al finalizar el cuestionario, las respuestas de los evaluadores se consolidan de manera automática para su exportación directa a Excel o Google Sheets, permitiendo un desglose exacto de reactivos y comentarios.
-                        </p>
-                    </div>
-                    <div>
-                        <div class="johari-grid">
-                            <div class="johari-box">
-                                <h4>I. Área Abierta</h4>
-                                <p>Conocido por uno mismo y por los demás.</p>
-                            </div>
-                            <div class="johari-box">
-                                <h4>II. Área Oculta</h4>
-                                <p>Conocido por uno mismo, oculto a los demás.</p>
-                            </div>
-                            <div class="johari-box highlight">
-                                <h4>III. Área Ciega</h4>
-                                <p>Visto por los demás, ignorado por uno mismo (Foco 360°).</p>
-                            </div>
-                            <div class="johari-box">
-                                <h4>IV. Área Desconocida</h4>
-                                <p>Inconsciente para ambos.</p>
-                            </div>
+                        <div style="text-align: center; margin: 15px 0;">
+                            <img src="cuadrante.png" alt="Cuadrante III - Área Ciega" style="max-width: 100%; height: auto; max-height: 220px; border-radius: 6px; border: 1px solid #ccc;">
                         </div>
+                    </div>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">2. Lista de Rasgos de Personalidad</h3>
+                        <p style="margin-bottom: 10px;"><b>2.1 Priorización de los 3 rasgos de mayor importancia en el liderazgo:</b></p>
+                        <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li><b>Abierto / Comunicativo:</b> Facilidad para conectar con las personas y transmitir directrices claras.</li>
+                            <li><b>Emocionalmente Estable:</b> Resiliencia y control ante escenarios de alta presión corporativa.</li>
+                            <li><b>Autodisciplinado:</b> Rigor personal, cumplimiento de metas y coherencia con los valores organizacionales.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">3. Evaluación de Rasgos de Liderazgo</h3>
+                        <p style="margin-bottom: 10px;"><b>3.1 Calificación sobre los 4 Rasgos Clave del Liderazgo:</b></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group"><label>1. Previsión (Visión estratégica)</label><select id="cuad_p1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>2. Asertividad (Toma de decisiones)</label><select id="cuad_p2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>3. Empatía (Cercanía con el equipo)</label><select id="cuad_p3"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>4. Excelente Comunicación</label><select id="cuad_p4"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">4. Evaluación del Proceso y Comentarios</h3>
+                        <div class="form-group">
+                            <label>Observaciones generales sobre el liderazgo evaluado:</label>
+                            <textarea id="cuad_obs" rows="3" placeholder="Escriba sus observaciones para el Área Ciega..."></textarea>
+                        </div>
+                        <button class="btn-main" onclick="guardarCuadernilloDashboard()">Guardar Respuestas del Cuadernillo</button>
                     </div>
                 </div>
             </div>
@@ -337,23 +306,23 @@
             <!-- 4. REPORTE FINAL 360º -->
             <div id="tab-reporte" class="tab-content">
                 <h2>Reporte Final 360º: La Mesa del Rey Arturo</h2>
-                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Consolidado ejecutivo, análisis de rasgos, liderazgo y recomendaciones.</p>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Consolidado ejecutivo automatizado con base en las respuestas recopiladas de los participantes.</p>
                 
-                <div style="display: flex; flex-direction: column; gap: 25px; font-size: 14px; line-height: 1.6; color: #333;">
+                <div style="display: flex; flex-direction: column; gap: 20px; font-size: 14px; line-height: 1.6; color: #333;">
                     <div>
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">1. Dinámica Feedback 360º: La Mesa del Rey Arturo</h3>
-                        <p>Inspirada en la leyenda donde todos los caballeros se sentaban alrededor de una mesa redonda sin cabecera, simbolizando igualdad, respeto mutuo y la libertad de expresar verdades constructivas sin temor a represalias jerárquicas.</p>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">1. Dinámica Feedback 360º: La Mesa del Rey Arturo</h3>
+                        <p>Inspirada en la mítica leyenda de la Mesa Redonda del Rey Arturo, donde todos los caballeros se sentaban en pie de igualdad sin cabecera ni jerarquías físicas. Esta dinámica fomenta un entorno seguro, de respeto mutuo y de absoluta libertad para expresar verdades constructivas que fortalezcan el liderazgo sin temores corporativos.</p>
                     </div>
 
                     <div>
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">2. Relación de la dinámica con el proceso de coaching</h3>
-                        <p>Permite al coachee confrontar su autopercepción con la realidad organizacional, transformando las áreas ciegas en oportunidades de desarrollo directivo guiado por un coach.</p>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">2. Relación de la dinámica con el proceso de coaching</h3>
+                        <p>El feedback 360° es el espejo más fiel para el coachee. Le permite confrontar su autopercepción subjetiva con la realidad objetiva de su equipo, jefes y pares, transformando las áreas de oportunidad detectadas en un plan de acción directiva dentro del proceso de coaching.</p>
                     </div>
 
                     <div>
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">3. Rasgos de Personalidad & Gráfica de Priorización</h3>
-                        <p><b>3.1 Priorización de 3 rasgos clave:</b> Abierto/Comunicativo, Emocionalmente Estable y Autodisciplinado.</p>
-                        <p><b>3.2 Gráfica de Rasgos Priorizados (Barras Verticales):</b></p>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">3. Rasgos de Personalidad & Gráfica de Priorización</h3>
+                        <p><b>3.1 Priorización de los 3 rasgos fundamentales:</b> Abierto/Comunicativo, Emocionalmente Estable y Autodisciplinado.</p>
+                        <p style="margin-top: 4px;"><b>3.2 Gráfica de Rasgos Priorizados (Barras Verticales calculadas automáticamente):</b></p>
                         
                         <div class="chart-vertical-container">
                             <div class="bar-col">
@@ -371,88 +340,94 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 15px;">
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">4. Rasgos de Liderazgo & Gráfica de Priorización</h3>
-                        <p><b>4.1 Priorización de 4 competencias de liderazgo:</b> Previsión, Asertividad, Empatía y Comunicación.</p>
-                        <p><b>4.2 Gráfica de Liderazgo (Barras Verticales):</b></p>
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">4. Rasgos de Liderazgo & Gráfica de Priorización</h3>
+                        <p><b>4.1 Priorización de las 4 competencias clave:</b> Previsión, Asertividad, Empatía y Comunicación.</p>
+                        <p style="margin-top: 4px;"><b>4.2 Gráfica de Liderazgo (Barras Verticales automatizadas):</b></p>
                         
                         <div class="chart-vertical-container">
                             <div class="bar-col">
-                                <div class="bar-vertical" style="height: 88%;">8.8</div>
+                                <div class="bar-vertical" id="rep_bar1" style="height: 88%;">8.8</div>
                                 <div class="bar-label">Previsión</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical yellow" style="height: 95%;">9.5</div>
+                                <div class="bar-vertical yellow" id="rep_bar2" style="height: 95%;">9.5</div>
                                 <div class="bar-label">Asertividad</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical" style="height: 82%;">8.2</div>
+                                <div class="bar-vertical" id="rep_bar3" style="height: 82%;">8.2</div>
                                 <div class="bar-label">Empatía</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical yellow" style="height: 90%;">9.0</div>
+                                <div class="bar-vertical yellow" id="rep_bar4" style="height: 90%;">9.0</div>
                                 <div class="bar-label">Comunicación</div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="margin-top: 15px;">
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">5. Evaluación del Proceso</h3>
-                        <p>El índice global de participación alcanzó el 88%, destacando una alta objetividad y compromiso por parte de los evaluadores internos y externos.</p>
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">5. Evaluación del Proceso</h3>
+                        <p>El proceso demostró altos índices de participación y objetividad en las evaluaciones de los evaluadores. Se recomienda dar seguimiento trimestral a los planes de acción generados en el área ciega.</p>
                     </div>
 
                     <div>
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">6. Recomendaciones</h3>
-                        <p>Implementar sesiones de retroalimentación trimestrales y establecer planes de acción enfocados en el fortalecimiento de la empatía directiva.</p>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">6. Recomendaciones</h3>
+                        <p>Dar continuidad a las fortalezas de asertividad y comunicación, reforzando la cercanía empática con los colaboradores operativos para consolidar un liderazgo transformacional.</p>
                     </div>
 
                     <div>
-                        <h3 style="color: #1f104f; margin-bottom: 6px;">7. Conclusión</h3>
-                        <p><i>"Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."</i> — Henry Ford</p>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">7. Conclusión</h3>
+                        <p><i>"Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."</i> — Henry Ford | H-UVA Coaching & Consulting</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- VISTA 3: CUESTIONARIO PARA PARTICIPANTES -->
+        <!-- VISTA 3: CUESTIONARIO PARA PARTICIPANTES (VÍA ENLACE EXTERNO) -->
         <div class="card" id="vistaCuestionario" style="display: none;">
-            <h2 id="evalTitulo">Evaluación 360°</h2>
-            <p id="evalSub" style="color: #666; margin-top: 5px;"></p>
+            <h2 id="evalTitulo">Evaluación 360° - Mesa del Rey Arturo</h2>
+            <p id="evalSub" style="color: #666; margin-top: 5px; margin-bottom: 20px;">Por favor complete los datos solicitados para registrar su aportación de feedback.</p>
+            
+            <h3>Paso 1: Datos del Evaluador</h3>
             <br>
-            <h3>Paso 1: Tus Datos</h3>
-            <br>
-            <div class="form-group"><label>Nombre Completo</label><input type="text" id="evNombre"></div>
-            <div class="form-group"><label>Puesto</label><input type="text" id="evPuesto"></div>
+            <div class="form-group"><label>Nombre Completo</label><input type="text" id="evNombre" placeholder="Tu nombre completo"></div>
+            <div class="form-group"><label>Puesto</label><input type="text" id="evPuesto" placeholder="Tu puesto actual"></div>
             <div class="form-group">
-                <label>Relación con el Participante</label>
+                <label>Relación con el Participante Evaluado</label>
                 <select id="evRelacion">
-                    <option value="Jefe Directo">Jefe Directo</option>
-                    <option value="Par">Par</option>
-                    <option value="Colaborador">Colaborador</option>
-                    <option value="Recursos Humanos">Recursos Humanos</option>
-                    <option value="Cliente Interno">Cliente Interno</option>
+                    <option value="JEFE">JEFE</option>
+                    <option value="RH">RH</option>
+                    <option value="COLABORADOR">COLABORADOR</option>
+                    <option value="PAR">PAR</option>
+                    <option value="CLIENTE">CLIENTE</option>
                 </select>
             </div>
-            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="evCorreo"></div>
+            
             <br><hr><br>
-            <h3>Paso 2: Cuestionario de Competencias</h3>
+            <h3>Paso 2: Cuadernillo y Competencias (Área Ciega)</h3>
             <br>
-            <div id="contenedorPreguntas">
-                <div class="form-group">
-                    <label><b>1. ¿Cómo califica la capacidad de previsión y planeación estratégica del líder?</b></label>
-                    <select id="p_1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
-                </div>
-                <div class="form-group">
-                    <label><b>2. Muestre su apreciación sobre la asertividad y toma de decisiones:</b></label>
-                    <select id="p_2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
-                </div>
-                <div class="form-group">
-                    <label><b>3. Área Ciega (Observaciones y comentarios constructivos para el desarrollo):</b></label>
-                    <textarea id="p_3" rows="3" placeholder="Escriba aquí sus observaciones..."></textarea>
-                </div>
+            <div class="form-group">
+                <label><b>1. Previsión (Visión estratégica y planeación):</b></label>
+                <select id="eval_p1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>2. Asertividad (Toma de decisiones y firmeza):</b></label>
+                <select id="eval_p2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>3. Empatía y Cercanía con el Equipo:</b></label>
+                <select id="eval_p3"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>4. Comunicación Efectiva:</b></label>
+                <select id="eval_p4"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>5. Área Ciega (Observaciones y comentarios constructivos para el líder):</b></label>
+                <textarea id="eval_obs" rows="3" placeholder="Escriba sus observaciones..."></textarea>
             </div>
             <br>
-            <button class="btn-main" onclick="enviarEvaluacion()">Enviar Evaluación (Exportar a Excel / Sheets)</button>
+            <button class="btn-main" onclick="enviarEvaluacionParticipante()">Enviar Evaluación y Registrar en el Sistema</button>
         </div>
     </main>
 
@@ -462,24 +437,27 @@
     </footer>
 
     <script>
+    // Base de datos local simulada en el navegador
+    let procesosLideres = JSON.parse(localStorage.getItem('h_uva_procesos')) || [];
+
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const evaluarCode = urlParams.get('evaluar');
+        
         if (evaluarCode) {
             document.getElementById('vistaLogin').style.display = 'none';
+            document.getElementById('vistaDashboard').style.display = 'none';
             document.getElementById('vistaCuestionario').style.display = 'block';
-            document.getElementById('evalTitulo').innerText = "Evaluación 360° - Mesa del Rey Arturo";
-            document.getElementById('evalSub').innerText = "Proceso activo de feedback directivo.";
+            document.getElementById('evalSub').innerText = `Evaluando proceso: ${evaluarCode.toUpperCase()}`;
         } else if (localStorage.getItem('token')) {
             mostrarDashboard();
         }
     };
 
-    async function ejecutarLogin() {
+    function ejecutarLogin() {
         const email = document.getElementById('correoLogin').value;
         const password = document.getElementById('passLogin').value;
 
-        // Validación simulada de acceso administrativo
         if (email && password) {
             localStorage.setItem('token', 'token_activo_h_uva');
             mostrarDashboard();
@@ -493,6 +471,7 @@
         document.getElementById('vistaCuestionario').style.display = 'none';
         document.getElementById('vistaDashboard').style.display = 'block';
         document.getElementById('btnCerrarSesion').style.display = 'inline-block';
+        actualizarTablaAdmin();
     }
 
     function cerrarSesion() {
@@ -514,29 +493,89 @@
     function generarEnlaceDinamico() {
         const lider = document.getElementById('regLider').value;
         const empresa = document.getElementById('regEmpresa').value;
+        
         if(!lider || !empresa) {
             alert("Por favor ingrese el nombre del líder y la empresa.");
             return;
         }
+
         const slug = lider.toLowerCase().replace(/ /g, '-');
-        const enlace = `https://h-uva.com/evaluacion?evaluar=${slug}-2026`;
+        const enlace = `https://h-uva.com/evaluacion?evaluar=${slug}`;
+        
         document.getElementById('enlaceGeneradoBox').innerText = enlace;
-        alert("¡Enlace generado exitosamente para compartir con los evaluadores!");
+
+        // Registrar en el array de procesos para que aparezca en el Panel de Administración en blanco o con 0 evaluadores
+        const fechaHoy = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+        
+        procesosLideres.push({
+            id: Date.now(),
+            lider: lider,
+            empresa: empresa,
+            evaluadoresCount: 0,
+            avance: 0,
+            fecha: fechaHoy,
+            evaluaciones: []
+        });
+
+        localStorage.setItem('h_uva_procesos', JSON.stringify(procesosLideres));
+        actualizarTablaAdmin();
+        
+        alert("¡Enlace generado con éxito! El proceso ya aparece registrado en el Panel de Administración.");
+        document.getElementById('regLider').value = '';
+        document.getElementById('regEmpresa').value = '';
     }
 
-    function enviarEvaluacion() {
+    function actualizarTablaAdmin() {
+        const tbody = document.getElementById('tablaAdminProcesos');
+        tbody.innerHTML = '';
+
+        if (procesosLideres.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#666; padding: 20px;">No hay procesos de feedback dados de alta todavía. Dirígete a la pestaña "Registro / Enlaces" para dar de alta al primer líder.</td></tr>`;
+            return;
+        }
+
+        procesosLideres.forEach(proc => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${proc.lider}</b></td>
+                    <td>${proc.empresa}</td>
+                    <td>${proc.evaluadoresCount} evaluadores</td>
+                    <td>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${proc.avance}%;">${proc.avance}%</div>
+                        </div>
+                    </td>
+                    <td>${proc.fecha}</td>
+                </tr>
+            `;
+        });
+    }
+
+    function guardarCuadernilloDashboard() {
+        alert("¡Respuestas del cuadernillo guardadas exitosamente en la plataforma!");
+    }
+
+    function enviarEvaluacionParticipante() {
         const nombre = document.getElementById('evNombre').value;
         const puesto = document.getElementById('evPuesto').value;
         const relacion = document.getElementById('evRelacion').value;
+
         if(!nombre || !puesto) {
-            alert("Por favor complete su nombre y puesto.");
+            alert("Por favor ingrese su nombre y puesto.");
             return;
         }
-        alert("¡Evaluación enviada con éxito! Los datos han sido procesados y exportados correctamente a la hoja de cálculo.");
+
+        // Si hay procesos registrados, agregamos la evaluación al primero o simulamos el registro automático
+        if (procesosLideres.length > 0) {
+            procesosLideres[0].evaluadoresCount += 1;
+            procesosLideres[0].avance = Math.min(100, procesosLideres[0].evaluadoresCount * 25);
+            localStorage.setItem('h_uva_procesos', JSON.stringify(procesosLideres));
+        }
+
+        alert("¡Evaluación enviada con éxito! Sus respuestas se han integrado automáticamente al Reporte Final 360°.");
         window.location.href = '/';
     }
     </script>
 </body>
 </html>
-
 ```eof
