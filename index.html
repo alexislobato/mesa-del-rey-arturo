@@ -5,31 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Mesa del Rey Arturo - H-UVA</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; }
         body { background-color: #fafafa; color: #1f104f; display: flex; flex-direction: column; min-height: 100vh; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #ffffff; border-bottom: 1px solid #eaeaea; }
-        .logo-container img { height: 50px; object-fit: contain; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #ffffff; border-bottom: 1px solid #eaeaea; }
+        .logo-container img { max-height: 70px; width: auto; display: block; object-fit: contain; }
         .header-title { text-align: center; flex-grow: 1; }
-        .header-title h1 { font-size: 20px; color: #1f104f; }
-        .btn-salir { background-color: #ffc107; color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; }
-        main { flex: 1; padding: 30px 20px; display: flex; justify-content: center; }
-        .card { background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 850px; }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
-        .btn-main { background-color: #1f104f; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #1f104f; color: white; }
-        .img-cuadrante { width: 100%; max-width: 500px; display: block; margin: 15px auto; border-radius: 8px; border: 1px solid #ccc; }
-        footer { text-align: center; padding: 15px; background-color: #ffffff; border-top: 1px solid #eaeaea; font-size: 12px; }
+        .header-title h1 { font-size: 26px; color: #1f104f; font-weight: bold; }
+        .header-title p { font-size: 15px; color: #666; }
+        .btn-salir { background-color: #ffc107; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; font-size: 14px; }
+        main { flex: 1; padding: 40px; display: flex; justify-content: center; align-items: flex-start; }
+        .card { background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 900px; }
+        .card-login { max-width: 550px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #1f104f; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .btn-main { background-color: #1f104f; color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        .btn-main:hover { background-color: #140a35; }
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #1f104f; color: white; font-weight: bold; }
+        .img-cuadrante { width: 100%; max-width: 550px; display: block; margin: 20px auto; border-radius: 8px; border: 1px solid #ccc; }
+        footer { text-align: center; padding: 20px; background-color: #ffffff; border-top: 1px solid #eaeaea; font-size: 13px; }
         footer a { color: #1f104f; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-container"><img src="logo.png" alt="H-UVA Logo"></div>
+        <div class="logo-container"><img src="/logo.png" alt="H-UVA Logo"></div>
         <div class="header-title">
             <h1>La Mesa del Rey Arturo</h1>
             <p>Dinámica de Feedback 360°</p>
@@ -39,24 +42,23 @@
 
     <main>
         <!-- VISTA 1: LOGIN -->
-        <div class="card" id="vistaLogin" style="max-width: 400px; text-align: center;">
-            <h2>Acceso Administrativo</h2>
-            <br>
+        <div class="card card-login" id="vistaLogin" style="text-align: center;">
+            <h2 style="font-size: 24px; margin-bottom: 20px;">Acceso Administrativo</h2>
             <div class="form-group"><label>Correo Electrónico</label><input type="email" id="correoLogin" placeholder="usuario@h-uva.com"></div>
             <div class="form-group"><label>Contraseña</label><input type="password" id="passLogin" placeholder="••••••••"></div>
             <button class="btn-main" onclick="ejecutarLogin()">Ingresar</button>
-            <div id="respLogin" style="margin-top: 10px; color: red;"></div>
+            <div id="respLogin" style="margin-top: 15px; color: red;"></div>
         </div>
 
         <!-- VISTA 2: DASHBOARD ADMIN -->
-        <div class="card" id="vistaDashboard" style="display: none;">
+        <div class="card" id="vistaDashboard" style="display: none; max-width: 1100px;">
             <h2>Panel de Administración (Mesa del Rey Arturo)</h2>
             <br>
             <h3>Registrar Nuevo Líder / Coachee</h3>
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <input type="text" id="regLider" placeholder="Nombre del Líder" style="flex:1; padding: 8px;">
-                <input type="text" id="regEmpresa" placeholder="Empresa" style="flex:1; padding: 8px;">
-                <button class="btn-main" style="width: auto;" onclick="crearLider()">Generar Enlace</button>
+            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                <input type="text" id="regLider" placeholder="Nombre del Líder" style="flex:1; padding: 12px; border: 1px solid #ccc; border-radius: 6px;">
+                <input type="text" id="regEmpresa" placeholder="Empresa" style="flex:1; padding: 12px; border: 1px solid #ccc; border-radius: 6px;">
+                <button class="btn-main" style="width: auto; padding: 12px 25px;" onclick="crearLider()">Generar Enlace</button>
             </div>
             <br><hr><br>
             <h3>Líderes Registrados</h3>
@@ -76,9 +78,10 @@
         <!-- VISTA 3: CUESTIONARIO EVALUADOR -->
         <div class="card" id="vistaCuestionario" style="display: none;">
             <h2 id="evalTitulo">Evaluación 360°</h2>
-            <p id="evalSub"></p>
+            <p id="evalSub" style="color: #666; margin-top: 5px;"></p>
             <br>
             <h3>Paso 1: Tus Datos</h3>
+            <br>
             <div class="form-group"><label>Nombre Completo</label><input type="text" id="evNombre"></div>
             <div class="form-group"><label>Puesto</label><input type="text" id="evPuesto"></div>
             <div class="form-group">
@@ -93,6 +96,7 @@
             <div class="form-group"><label>Correo Electrónico</label><input type="email" id="evCorreo"></div>
             <br><hr><br>
             <h3>Paso 2: Cuestionario</h3>
+            <br>
             <div id="contenedorPreguntas"></div>
             <br>
             <button class="btn-main" onclick="enviarEvaluacion()">Enviar Evaluación</button>
@@ -154,6 +158,8 @@
         const coacheeNombre = document.getElementById('regLider').value;
         const empresa = document.getElementById('regEmpresa').value;
 
+        if(!coacheeNombre || !empresa) return alert("Ingresa nombre y empresa.");
+
         const res = await fetch('/api/registros', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -180,8 +186,8 @@
                     <td>${l.empresa}</td>
                     <td>${l.evaluacionesRecibidas.length} Recibidas</td>
                     <td>
-                        <button onclick="copiarMensaje('${btoa(unescape(encodeURIComponent(l.plantillaMensaje)))}')" style="padding: 5px; cursor:pointer;">Copiar Mensaje/Liga</button>
-                        <button onclick="imprimirReporte(${l.id})" style="padding: 5px; cursor:pointer; background:#ffc107;">Descargar Reporte PDF</button>
+                        <button onclick="copiarMensaje('${btoa(unescape(encodeURIComponent(l.plantillaMensaje)))}')" style="padding: 8px 12px; cursor:pointer; background:#1f104f; color:white; border:none; border-radius:4px; margin-right:5px;">Copiar Mensaje/Liga</button>
+                        <button onclick="imprimirReporte(${l.id})" style="padding: 8px 12px; cursor:pointer; background:#ffc107; color:black; border:none; border-radius:4px; font-weight:bold;">Descargar Reporte PDF</button>
                     </td>
                 </tr>
             `;
@@ -191,7 +197,7 @@
     function copiarMensaje(base64) {
         const texto = decodeURIComponent(escape(atob(base64)));
         navigator.clipboard.writeText(texto);
-        alert("¡Plantilla y enlace copiados al portapapeles listo para compartir!");
+        alert("¡Plantilla y enlace copiados al portapapeles!");
     }
 
     async function cargarcuestionario(codigo) {
@@ -209,12 +215,12 @@
         cont.innerHTML = '';
 
         data.preguntas.forEach(p => {
-            let html = `<div style="margin-bottom: 20px;"><label><b>${p.id}. ${p.pregunta}</b></label>`;
+            let html = `<div style="margin-bottom: 25px;"><label><b>${p.id}. ${p.pregunta}</b></label>`;
             if (p.esCuadrante) {
-                html += `<img src="cuadrante.png" class="img-cuadrante" alt="Cuadrante III - Área Ciega">`;
+                html += `<img src="/cuadrante.png" class="img-cuadrante" alt="Cuadrante III - Área Ciega">`;
             }
             if (p.tipo === 'escala') {
-                html += `<select id="p_${p.id}" style="margin-top:5px;">
+                html += `<select id="p_${p.id}" style="margin-top:8px;">
                             <option value="1">1 - Deficiente</option>
                             <option value="2">2 - Regular</option>
                             <option value="3">3 - Bueno</option>
@@ -222,7 +228,7 @@
                             <option value="5">5 - Excelente</option>
                         </select>`;
             } else {
-                html += `<textarea id="p_${p.id}" rows="3" style="margin-top:5px;"></textarea>`;
+                html += `<textarea id="p_${p.id}" rows="3" style="margin-top:8px;"></textarea>`;
             }
             html += `</div>`;
             cont.innerHTML += html;
@@ -263,17 +269,18 @@
         const ventana = window.open('', '_blank');
         ventana.document.write(`
             <html><head><title>Reporte 360 - ${lider.coacheeNombre}</title></head>
-            <body style="font-family: Arial; padding: 30px;">
+            <body style="font-family: 'Century Gothic', sans-serif; padding: 40px;">
                 <h1>Reporte Ejecutivo Feedback 360°</h1>
                 <h2>La Mesa del Rey Arturo</h2>
-                <hr>
+                <hr style="margin: 15px 0;">
                 <p><b>Líder:</b> ${lider.coacheeNombre}</p>
                 <p><b>Empresa:</b> ${lider.empresa}</p>
                 <p><b>Total de Evaluadores:</b> ${lider.evaluacionesRecibidas.length}</p>
                 <br>
                 <h3>Resultados por Evaluador (Anónimo por Relación)</h3>
+                <br>
                 ${lider.evaluacionesRecibidas.map(e => `
-                    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                    <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px; border-radius: 6px;">
                         <p><b>Relación:</b> ${e.evaluador.relacion}</p>
                         <p><b>Área Ciega (Observaciones):</b> ${e.respuestas.find(r => r.p === 4)?.resp || 'N/A'}</p>
                     </div>
