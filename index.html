@@ -6,33 +6,119 @@
     <title>La Mesa del Rey Arturo - H-UVA</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; }
-        body { background-color: #fafafa; color: #1f104f; display: flex; flex-direction: column; min-height: 100vh; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #ffffff; border-bottom: 1px solid #eaeaea; }
+        
+        body { 
+            background-color: #fafafa; 
+            color: #1f104f; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Elementos decorativos de fondo (Círculos) */
+        .circle-bg {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+        .circle-purple-1 { width: 350px; height: 350px; background-color: #1f104f; top: -80px; left: -80px; }
+        .circle-yellow-1 { width: 250px; height: 250px; background-color: #ffc107; bottom: 80px; right: -50px; }
+        .circle-purple-2 { width: 180px; height: 180px; background-color: #1f104f; bottom: -40px; left: 10%; }
+        .circle-yellow-2 { width: 120px; height: 120px; background-color: #ffc107; top: 15%; right: 12%; }
+
+        header { 
+            display: grid; 
+            grid-template-columns: 180px 1fr 180px; 
+            align-items: center; 
+            padding: 20px 50px; 
+            background-color: #ffffff; 
+            border-bottom: 1px solid #eaeaea; 
+            position: relative;
+            z-index: 1;
+        }
+
         .logo-container img { max-height: 70px; width: auto; display: block; object-fit: contain; }
-        .header-title { text-align: center; flex-grow: 1; }
+        
+        .header-title { text-align: center; }
         .header-title h1 { font-size: 26px; color: #1f104f; font-weight: bold; }
         .header-title p { font-size: 15px; color: #666; }
-        .btn-salir { background-color: #ffc107; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; font-size: 14px; }
-        main { flex: 1; padding: 40px; display: flex; justify-content: center; align-items: flex-start; }
-        .card { background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 900px; }
-        .card-login { max-width: 550px; margin: 0 auto; }
+        
+        .btn-salir { 
+            background-color: #ffc107; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: none; 
+            font-size: 14px;
+            justify-self: end;
+        }
+
+        main { 
+            flex: 1; 
+            padding: 40px 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+            z-index: 1;
+        }
+
+        .card { 
+            background: #ffffff; 
+            padding: 45px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            width: 100%; 
+            max-width: 900px; 
+        }
+
+        .card-login { 
+            max-width: 480px; 
+            margin: 0 auto; 
+        }
+
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #1f104f; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        
         .btn-main { background-color: #1f104f; color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
         .btn-main:hover { background-color: #140a35; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 25px; font-size: 14px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: #1f104f; color: white; font-weight: bold; }
+        
         .img-cuadrante { width: 100%; max-width: 550px; display: block; margin: 20px auto; border-radius: 8px; border: 1px solid #ccc; }
-        footer { text-align: center; padding: 20px; background-color: #ffffff; border-top: 1px solid #eaeaea; font-size: 13px; }
+        
+        footer { 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #ffffff; 
+            border-top: 1px solid #eaeaea; 
+            font-size: 13px; 
+            position: relative;
+            z-index: 1;
+        }
         footer a { color: #1f104f; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
 
+    <!-- Círculos Decorativos de Fondo -->
+    <div class="circle-bg circle-purple-1"></div>
+    <div class="circle-bg circle-yellow-1"></div>
+    <div class="circle-bg circle-purple-2"></div>
+    <div class="circle-bg circle-yellow-2"></div>
+
     <header>
-      <div class="logo-container"><img src="LOGO_H-UVA.png" alt="H-UVA Logo"></div>
+        <div class="logo-container"><img src="LOGO_H-UVA.png" alt="H-UVA Logo"></div>
         <div class="header-title">
             <h1>La Mesa del Rey Arturo</h1>
             <p>Dinámica de Feedback 360°</p>
@@ -217,7 +303,7 @@
         data.preguntas.forEach(p => {
             let html = `<div style="margin-bottom: 25px;"><label><b>${p.id}. ${p.pregunta}</b></label>`;
             if (p.esCuadrante) {
-                html += `<img src="/cuadrante.png" class="img-cuadrante" alt="Cuadrante III - Área Ciega">`;
+                html += `<img src="cuadrante.png" class="img-cuadrante" alt="Cuadrante III - Área Ciega">`;
             }
             if (p.tipo === 'escala') {
                 html += `<select id="p_${p.id}" style="margin-top:8px;">
