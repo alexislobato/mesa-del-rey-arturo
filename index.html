@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Mesa del Rey Arturo — Coaching & Consulting H-UVA</title>
+    <!-- LIBRERÍA DE GRÁFICOS CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; }
+        body { background-color: #fcfbfe; color: #000000; margin: 0; padding: 0; position: relative; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spinReverseSlow { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+        .bg-circle { position: fixed; pointer-events: none; z-index: 0; opacity: 0.75; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        .circle-purple-top { top: 60px; right: -80px; width: 450px; height: 450px; background-image: url('Presentación sin título (1).jpg'); animation: spinSlow 90s linear infinite; }
+        .circle-purple-bottom { bottom: 220px; left: -60px; width: 250px; height: 250px; background-image: url('Presentación sin título (1).jpg'); animation: spinSlow 60s linear infinite; }
+        .circle-yellow-bottom { bottom: -100px; left: -80px; width: 480px; height: 480px; background-image: url('Presentación sin título (2).jpg'); animation: spinReverseSlow 75s linear infinite; }
+        .circle-yellow-right { bottom: 80px; right: -60px; width: 380px; height: 380px; background-image: url('Presentación sin título (2).jpg'); animation: spinReverseSlow 80s linear infinite; }
+
+        header { background-color: #ffffff; padding: 12px 40px; position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #F3BA37; }
+        header .logo-container { width: 140px; flex-shrink: 0; }
+        header .logo-container img { width: 100%; height: auto; display: block; }
+        header .header-titles { flex-grow: 1; text-align: center; margin-right: 140px; }
+        header h1 { margin: 0; font-size: 1.8rem; color: #27186D; font-weight: bold; }
+        header .sub-title { font-size: 0.88rem; color: #27186D; margin-top: 3px; font-weight: bold; }
+
+        nav.tabs-nav { display: flex; justify-content: center; background-color: #ffffff; border-bottom: 1px solid #F3BA37; position: relative; z-index: 2; }
+        nav.tabs-nav button { background: none; border: none; color: #27186D; padding: 12px 28px; font-size: 0.88rem; font-weight: bold; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        nav.tabs-nav button.active { color: #20014D; border-bottom: 3px solid #F3BA37; background-color: #f8f6fb; }
+
+        main { flex-grow: 1; position: relative; z-index: 1; padding: 40px 20px; }
+        .tab-content { display: none; max-width: 950px; margin: 0 auto; background: rgba(255, 255, 255, 0.97); padding: 35px 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(32, 1, 77, 0.05); border: 1px solid #eaeaea; }
+        .tab-content.active { display: block; }
+
+        input[type="email"], input[type="password"], input[type="text"], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #b0b0b0; border-radius: 6px; font-size: 0.9rem; color: #000000; box-sizing: border-box; font-family: 'Century Gothic', CenturyGothic, sans-serif; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #20014D; box-shadow: 0 0 0 2px rgba(32, 1, 77, 0.15); }
+
+        .btn-submit { display: block; width: 100%; padding: 16px; background: #20014D; color: #ffffff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 25px; box-shadow: 0 4px 12px rgba(32, 1, 77, 0.25); font-family: 'Century Gothic', CenturyGothic, sans-serif; }
+        .btn-submit:hover { background: #27186D; }
+
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; border-top: 1px solid #F3BA37; position: relative; z-index: 2; background-color: #ffffff; margin-top: auto; font-family: 'Century Gothic', CenturyGothic, sans-serif; }
+    </style>
+</head>
+<body>
+
+<div class="bg-circle circle-purple-top"></div>
+<div class="bg-circle circle-purple-bottom"></div>
+<div class="bg-circle circle-yellow-bottom"></div>
+<div class="bg-circle circle-yellow-right"></div>
+
+<header>
+    <div class="logo-container">
+        <img src="LOGO_H-UVA.png" alt="H-UVA Coaching & Consultants">
+    </div>
+    <div class="header-titles">
+        <h1>La Mesa del Rey Arturo</h1>
+        <div class="sub-title">Dinámica de Feedback 360°</div>
+    </div>
+</header>
+
+<nav class="tabs-nav" id="navTabs" style="display: none;">
+    <button class="tab-btn active" onclick="openTab(event, 'dashboard')">Dashboard Admin</button>
+    <button class="tab-btn" onclick="openTab(event, 'registro')">Registro / Enlaces</button>
+    <button class="tab-btn" onclick="openTab(event, 'cuestionario')">Vista del Cuestionario</button>
+    <button class="tab-btn" onclick="openTab(event, 'reporte')">Reporte Final 360°</button>
+</nav>
+
+<main>
+    <!-- ACCESO ADMINISTRATIVO -->
+    <div id="loginView" class="tab-content active" style="max-width: 420px; text-align: center;">
+        <h2 style="color: #27186D; font-size: 1.35rem; border-bottom: 2px solid #F3BA37; padding-bottom: 8px; display: inline-block;">Acceso Administrativo</h2>
+        <p style="font-size: 0.85rem; color: #555555; margin-bottom: 20px;">Ingresa tus credenciales corporativas H-UVA</p>
+        <form onsubmit="ejecutarLogin(event)">
+            <div style="text-align: left; margin-top: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Correo Electrónico:</label>
+                <input type="email" id="userEmail" placeholder="usuario@h-uva.com" required>
+            </div>
+            <div style="text-align: left; margin-top: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Contraseña:</label>
+                <input type="password" id="userPass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit" style="padding: 12px; margin-top: 20px;">Ingresar</button>
+        </form>
+    </div>
+
+    <!-- CAMBIO OBLIGATORIO DE CONTRASEÑA -->
+    <div id="changePassView" class="tab-content" style="max-width: 420px; text-align: center;">
+        <h2 style="color: #27186D; font-size: 1.35rem; border-bottom: 2px solid #F3BA37; padding-bottom: 8px; display: inline-block;">Actualizar Contraseña</h2>
+        <p style="font-size: 0.85rem; color: #c62828; font-weight: bold; margin-top: 15px;">Por seguridad, debes cambiar tu clave provisional en tu primer acceso.</p>
+        <form onsubmit="ejecutarCambioPass(event)">
+            <div style="text-align: left; margin-top: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Nueva Contraseña:</label>
+                <input type="password" id="newPass" required>
+            </div>
+            <div style="text-align: left; margin-top: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Confirmar Contraseña:</label>
+                <input type="password" id="confirmPass" required>
+            </div>
+            <button type="submit" class="btn-submit" style="padding: 12px; margin-top: 20px;">Guardar y Entrar</button>
+        </form>
+    </div>
+
+    <!-- PESTAÑA 1: DASHBOARD ADMIN -->
+    <div id="dashboard" class="tab-content">
+        <h2 style="color: #27186D; font-size: 1.35rem; border-bottom: 2px solid #F3BA37; padding-bottom: 8px; display: inline-block;">Dashboard de Administración</h2>
+        <p id="welcomeMsg" style="font-weight: bold; color: #20014D; margin-top: 15px; margin-bottom: 20px;"></p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px;">
+            <div style="background: #ffffff; border-left: 5px solid #27186D; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <div style="font-size: 0.75rem; color: #555; text-transform: uppercase; font-weight: bold;">Procesos Activos</div>
+                <div style="font-size: 1.6rem; font-weight: bold; color: #27186D; margin-top: 5px;">3</div>
+            </div>
+            <div style="background: #ffffff; border-left: 5px solid #F3BA37; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <div style="font-size: 0.75rem; color: #555; text-transform: uppercase; font-weight: bold;">Enviadas</div>
+                <div style="font-size: 1.6rem; font-weight: bold; color: #20014D; margin-top: 5px;">18</div>
+            </div>
+            <div style="background: #ffffff; border-left: 5px solid #2e7d32; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <div style="font-size: 0.75rem; color: #555; text-transform: uppercase; font-weight: bold;">Completadas</div>
+                <div style="font-size: 1.6rem; font-weight: bold; color: #2e7d32; margin-top: 5px;">14</div>
+            </div>
+            <div style="background: #ffffff; border-left: 5px solid #c62828; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <div style="font-size: 0.75rem; color: #555; text-transform: uppercase; font-weight: bold;">Pendientes</div>
+                <div style="font-size: 1.6rem; font-weight: bold; color: #c62828; margin-top: 5px;">4</div>
+            </div>
+        </div>
+
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">Estatus y Seguimiento de Evaluaciones Activas</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.88rem;">
+                <thead>
+                    <tr>
+                        <th style="background-color: #20014D; color: #ffffff; font-weight: bold; padding: 10px; border: 1px solid #cecece;">Líder Evaluado</th>
+                        <th style="background-color: #20014D; color: #ffffff; font-weight: bold; padding: 10px; border: 1px solid #cecece;">Empresa</th>
+                        <th style="background-color: #20014D; color: #ffffff; font-weight: bold; padding: 10px; border: 1px solid #cecece;">Avance</th>
+                        <th style="background-color: #20014D; color: #ffffff; font-weight: bold; padding: 10px; border: 1px solid #cecece;">Estatus</th>
+                        <th style="background-color: #20014D; color: #ffffff; font-weight: bold; padding: 10px; border: 1px solid #cecece;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #cecece;"><strong>Carlos Mendoza</strong></td>
+                        <td style="padding: 10px; border: 1px solid #cecece;">Grupo Industrial X</td>
+                        <td style="padding: 10px; border: 1px solid #cecece;">
+                            <div style="background: #e0e0e0; border-radius: 10px; height: 10px; width: 100%; overflow: hidden;">
+                                <div style="background: #27186D; width: 80%; height: 100%;"></div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: #555;">4 de 5 respuestas</span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #cecece;"><span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem;">En Proceso</span></td>
+                        <td style="padding: 10px; border: 1px solid #cecece;">
+                            <button onclick="alert('Enlace copiado al portapapeles')" style="background: #F3BA37; border: none; padding: 6px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.78rem; color: #20014D;">Copiar Link</button>
+                            <button onclick="openTab(event, 'reporte')" style="background: #20014D; border: none; padding: 6px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.78rem; color: #ffffff;">Reporte</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 2: REGISTRO / ENLACES -->
+    <div id="registro" class="tab-content">
+        <h2 style="color: #27186D; font-size: 1.35rem; border-bottom: 2px solid #F3BA37; padding-bottom: 8px; display: inline-block;">Registro y Generación de Enlaces</h2>
+        <p style="font-size: 0.9rem; color: #333333; margin-top: 10px; margin-bottom: 25px;">Alta de nuevos evaluados y asignación de invitaciones.</p>
+
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">Alta del Evaluado (Coachee)</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <div>
+                    <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Nombre Completo del Evaluado:</label>
+                    <input type="text" id="regNombre" placeholder="Ej. Roberto Sánchez" style="margin-top: 5px;">
+                </div>
+                <div>
+                    <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Empresa u Organización:</label>
+                    <input type="text" id="regEmpresa" placeholder="Ej. H-UVA Consulting" style="margin-top: 5px;">
+                </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #27186D;">Lista de Correos para Invitados (separados por coma):</label>
+                <textarea rows="3" placeholder="jefe@empresa.com, colaborador1@empresa.com, rh@empresa.com" style="margin-top: 5px;"></textarea>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="alert('¡Enlaces generados exitosamente!')" style="width: auto; padding: 12px 25px; margin-top: 20px; font-size: 0.95rem;">
+                Generar y Enviar Enlaces
+            </button>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 3: VISTA CUESTIONARIO COMPLETO (LOS 13 RASGOS, TABLA 1, LOS 10 RASGOS DE LIDERAZGO CON DEFINICIONES, TABLA 2 Y EVALUACIÓN FINAL) -->
+    <div id="cuestionario" class="tab-content">
+
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">Dinámica "La Mesa del Rey Arturo"</h2>
+            <p style="margin-top: 10px;"><strong>Soporte para gestionar y aprovechar un "Feedback 360°"</strong></p>
+            <p style="font-size: 0.9rem; color: #333333;">Este cuestionario digital recaba las percepciones de líderes e invitados para identificar fortalezas y áreas de oportunidad clave en el desarrollo ejecutivo.</p>
+        </div>
+
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">1. Acuerdos del Manual</h2>
+            <div style="margin-top: 10px; margin-bottom: 12px; line-height: 1.6; font-size: 0.92rem;">• <strong style="color: #27186D;">Sé específico:</strong> Criticar un comportamiento de forma genérica pocas veces da resultados. Acompaña tus comentarios de situaciones concretas.</div>
+            <div style="margin-bottom: 12px; line-height: 1.6; font-size: 0.92rem;">• <strong style="color: #27186D;">Acompaña el feedback de ideas para mejorar:</strong> El feedback sirve para ofrecer propuestas claras de crecimiento profesional.</div>
+            <div style="margin-bottom: 12px; line-height: 1.6; font-size: 0.92rem;">• <strong style="color: #27186D;">Céntrate en las acciones:</strong> Comunica tu opinión sobre los comportamientos laborales, no sobre la personalidad.</div>
+            <div style="margin-bottom: 12px; line-height: 1.6; font-size: 0.92rem;">• <strong style="color: #27186D;">Ve al grano:</strong> Habla de forma directa, respetuosa y sincera por el bien de la organización y el desarrollo del líder.</div>
+            <div style="margin-top: 15px;">
+                <label style="font-size: 0.9rem; font-weight: bold; color: #27186D;">Otro acuerdo(s) que consideres importante:</label>
+                <input type="text" placeholder="Escribe aquí otro acuerdo relevante..." style="margin-top: 5px;">
+            </div>
+        </div>
+
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">2. Cuadrante III: Área Ciega del Coachee</h2>
+            <div style="background: #fcfbfe; padding: 18px; border-radius: 8px; line-height: 1.6; font-size: 0.92rem; border: 1px solid #20014D; margin-top: 10px;">
+                <p style="margin-top: 0;">Incluye todo aquello que los demás ven en nosotros y nosotros no vemos. Todo aquello que conforma la impresión que causamos a los demás y que comunicamos en nuestro modo de ser, de comportarnos, en gestos y expresiones, etc.</p>
+                <p>El Área Ciega es en la que se representan todas nuestras limitaciones de las que no somos conscientes, pero que los demás pueden observar y experimentar en el proceso de interacción.</p>
+                <p>La relación interpersonal puede hacernos conscientes de los contenidos del Área Ciega, aun cuando con frecuencia nos resistimos a admitir que somos así o tenemos tal o cual defecto o limitación.</p>
+                <p style="margin-bottom: 0;">En esta zona actúan con gran fuerza nuestros mecanismos de defensa, pero este área puede ser reducida en la medida en que aceptemos la retroalimentación que proviene de los demás en el proceso de interacción desarrollando una actitud de receptividad tal que incite a los miembros del grupo a darnos esa retroalimentación o lo comúnmente conocido como «feedback».</p>
+            </div>
+        </div>
+
+        <form id="formFeedback">
+            <!-- 3. LISTA DE LOS 13 RASGOS DE PERSONALIDAD -->
+            <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+                <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">3. Lista de Rasgos de Personalidad (13 Escalas)</h2>
+                <p style="font-size: 0.9rem; color: #333333; margin-top: 10px; margin-bottom: 15px;">Selecciona una opción del 1 al 4 para cada rasgo según lo observado:</p>
+
+                <!-- RASGO 1 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Reservado</strong><br><span style="font-size:0.78rem; color:#555;">Serio, Prudente, Crítico</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p1" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p1" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p1" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p1" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Abierto</strong><br><span style="font-size:0.78rem; color:#555;">Afectuoso, Comunicativo</span></div>
+                </div>
+
+                <!-- RASGO 2 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Afectado Sentimientos</strong><br><span style="font-size:0.78rem; color:#555;">Turbable, Poco Estable</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p2" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p2" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p2" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p2" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Emocionalmente Estable</strong><br><span style="font-size:0.78rem; color:#555;">Tranquilo, Maduro, Afronta la Realidad</span></div>
+                </div>
+
+                <!-- RASGO 3 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Calmoso</strong><br><span style="font-size:0.78rem; color:#555;">Poco Expresivo, Cautela</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p3" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p3" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p3" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p3" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Excitable</strong><br><span style="font-size:0.78rem; color:#555;">Impaciente, Exigente, Hiperactivo</span></div>
+                </div>
+
+                <!-- RASGO 4 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Sumiso</strong><br><span style="font-size:0.78rem; color:#555;">Obediente, Dócil, Cede con Facilidad</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p4" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p4" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p4" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p4" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Dominante</strong><br><span style="font-size:0.78rem; color:#555;">Agresivo, Obstinado, Autoritario</span></div>
+                </div>
+
+                <!-- RASGO 5 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Sobrio</strong><br><span style="font-size:0.78rem; color:#555;">Prudente, Serio, Austero</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p5" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p5" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p5" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p5" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Entusiasta</strong><br><span style="font-size:0.78rem; color:#555;">Animado, Impetuoso</span></div>
+                </div>
+
+                <!-- RASGO 6 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Despreocupado</strong><br><span style="font-size:0.78rem; color:#555;">Tranquilo, Flemático</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p6" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p6" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p6" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p6" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Consciente</strong><br><span style="font-size:0.78rem; color:#555;">Con Juicio, Perseverante, Sujeto a Normas</span></div>
+                </div>
+
+                <!-- RASGO 7 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Cohibido</strong><br><span style="font-size:0.78rem; color:#555;">Tímido, Sensible a la Amenaza</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p7" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p7" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p7" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p7" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Emprendedor</strong><br><span style="font-size:0.78rem; color:#555;">Socialmente Atrevido, Decidido</span></div>
+                </div>
+
+                <!-- RASGO 8 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Sensibilidad Dura</strong><br><span style="font-size:0.78rem; color:#555;">Realista, Confía en Sí Mismo</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p8" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p8" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p8" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p8" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Sensible</strong><br><span style="font-size:0.78rem; color:#555;">Impresionable, Dependiente</span></div>
+                </div>
+
+                <!-- RASGO 9 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Seguro</strong><br><span style="font-size:0.78rem; color:#555;">Activo, Actividad en Grupo</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p9" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p9" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p9" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p9" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Dubitativo</strong><br><span style="font-size:0.78rem; color:#555;">Dudoso, Individualista</span></div>
+                </div>
+
+                <!-- RASGO 10 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Sereno</strong><br><span style="font-size:0.78rem; color:#555;">Apacible, Seguro de Sí Mismo</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p10" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p10" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p10" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p10" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Aprensivo</strong><br><span style="font-size:0.78rem; color:#555;">Inseguro, Preocupado</span></div>
+                </div>
+
+                <!-- RASGO 11 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Sociable</strong><br><span style="font-size:0.78rem; color:#555;">Atento, Buen Compañero</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p11" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p11" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p11" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p11" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Autosuficiente</strong><br><span style="font-size:0.78rem; color:#555;">Lleno de Recursos</span></div>
+                </div>
+
+                <!-- RASGO 12 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Poco Integrado</strong><br><span style="font-size:0.78rem; color:#555;">Descuida Normas</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p12" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p12" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p12" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p12" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Integrado</strong><br><span style="font-size:0.78rem; color:#555;">Autodisciplinado</span></div>
+                </div>
+
+                <!-- RASGO 13 -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e0e0e0; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px;">
+                    <div style="width: 32%; font-size: 0.88rem;"><strong style="color: #27186D;">Relajado</strong><br><span style="font-size:0.78rem; color:#555;">Tranquilo, Tolerante</span></div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p13" value="1"> 1</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p13" value="2"> 2</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p13" value="3"> 3</label>
+                        <label style="cursor: pointer; color: #20014D; font-weight: bold;"><input type="radio" name="p13" value="4"> 4</label>
+                    </div>
+                    <div style="width: 32%; font-size: 0.88rem; text-align: right;"><strong style="color: #27186D;">Tenso</strong><br><span style="font-size:0.78rem; color:#555;">Inquieto, Rígido</span></div>
+                </div>
+            </div>
+
+            <!-- 4. PRIORIZACIÓN DE LOS 3 RASGOS DE PERSONALIDAD -->
+            <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+                <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">4. Priorización: Los 3 Rasgos Más Importantes</h2>
+                <p style="font-size: 0.9rem; color: #333333; margin-top: 10px; margin-bottom: 15px;">Menciona los tres rasgos de mayor importancia para este proceso (prioriza del 1 al 3):</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 30%;">Rasgo Prioritario</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 35%;">Evaluación Presente</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 35%;">Propuesta a Modificar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;">
+                                <select><option value="">-- Prioridad 1 --</option><option>Reservado / Abierto</option><option>Afectado / Estable</option><option>Calmoso / Excitable</option><option>Sumiso / Dominante</option><option>Sobrio / Entusiasta</option><option>Despreocupado / Consciente</option><option>Cohibido / Emprendedor</option><option>Sensibilidad Dura / Sensible</option><option>Seguro / Dubitativo</option><option>Sereno / Aprensivo</option><option>Sociable / Autosuficiente</option><option>Poco Integrado / Integrado</option><option>Relajado / Tenso</option></select>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="¿Cómo lo observas hoy?"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="Sugerencia de cambio..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;">
+                                <select><option value="">-- Prioridad 2 --</option><option>Reservado / Abierto</option><option>Afectado / Estable</option><option>Calmoso / Excitable</option><option>Sumiso / Dominante</option><option>Sobrio / Entusiasta</option><option>Despreocupado / Consciente</option><option>Cohibido / Emprendedor</option><option>Sensibilidad Dura / Sensible</option><option>Seguro / Dubitativo</option><option>Sereno / Aprensivo</option><option>Sociable / Autosuficiente</option><option>Poco Integrado / Integrado</option><option>Relajado / Tenso</option></select>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="¿Cómo lo observas hoy?"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="Sugerencia de cambio..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;">
+                                <select><option value="">-- Prioridad 3 --</option><option>Reservado / Abierto</option><option>Afectado / Estable</option><option>Calmoso / Excitable</option><option>Sumiso / Dominante</option><option>Sobrio / Entusiasta</option><option>Despreocupado / Consciente</option><option>Cohibido / Emprendedor</option><option>Sensibilidad Dura / Sensible</option><option>Seguro / Dubitativo</option><option>Sereno / Aprensivo</option><option>Sociable / Autosuficiente</option><option>Poco Integrado / Integrado</option><option>Relajado / Tenso</option></select>
+                            </td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="¿Cómo lo observas hoy?"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text" placeholder="Sugerencia de cambio..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 5. LOS 10 RASGOS DE LIDERAZGO CON DEFINICIONES COMPLETAS -->
+            <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+                <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">5. Evaluación de Rasgos de Liderazgo (10 Rasgos)</h2>
+                <p style="font-size: 0.9rem; color: #333333; margin-top: 10px; margin-bottom: 15px;">En una escala del 1 (Deficiente), 2 (Regular), 3 (Suficiente), 4 (Sobresaliente):</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 45%;">Rasgo y Definición</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 25%;">Lo Que Observo</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 30%;">Lo Que Puede Modificar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">1. Previsión</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">El líder tiene claridad acerca de las acciones a realizar para prever escenarios en corto, mediano y largo plazo.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">2. Asertividad</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Expresa sus opiniones e intereses de manera honesta, directa y tranquila.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">3. Proactividad</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Líder dinámico, no se queda estático y no tiene miedo a los cambios o nuevas estrategias.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">4. Empatía</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Capacidad para descifrar el sentir de sus colaboradores y preocuparse genuinamente por ellos.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">5. Ética y Credibilidad</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Promueve un ambiente respetuoso y armónico en el equipo actuando con integridad.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">6. Excelente Comunicación</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Escucha activa, pide feedback para asegurar que los mensajes sean comprendidos.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">7. Enfoque</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Consciente de los objetivos esperados, sabe delegar y estructurar sus equipos.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">8. Creatividad</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Crea nuevas soluciones sin limitar sus capacidades a lo strictly tradicional.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">9. Adaptación al Entorno</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Aprovecha los recursos disponibles, evoluciona y convierte dificultades en oportunidades.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #cecece;">
+                                <strong style="color: #27186D;">10. Motivación</strong>
+                                <div style="font-size: 0.82rem; color: #333; margin-top: 4px; line-height: 1.4;">Resalta las competencias del equipo y las equilibra para alcanzar juntos las metas.</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><select><option value="">-- Calif. --</option><option value="1">1 (Deficiente)</option><option value="2">2 (Regular)</option><option value="3">3 (Suficiente)</option><option value="4">4 (Sobresaliente)</option></select></td>
+                            <td style="padding: 10px; border: 1px solid #cecece;"><input type="text" placeholder="Comentarios..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 6. SELECCIÓN DE 4 RASGOS DE LIDERAZGO -->
+            <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+                <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">6. Selección de 4 Rasgos de Liderazgo Clave</h2>
+                <p style="font-size: 0.9rem; color: #333333; margin-top: 10px; margin-bottom: 15px;">Elige 4 Rasgos de Liderazgo y brinda tus observaciones:</p>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 25%;">Rasgo Elegido</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 25%;">Evaluación Presente</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 25%;">Propuesta a Modificar</th>
+                            <th style="background-color: #20014D; color: #ffffff; padding: 10px; border: 1px solid #cecece; width: 25%;">Consejos o Recomendaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><select><option value="">-- Rasgo 1 --</option><option>Previsión</option><option>Asertividad</option><option>Proactividad</option><option>Empatía</option><option>Ética y Credibilidad</option><option>Excelente Comunicación</option><option>Enfoque</option><option>Creatividad</option><option>Adaptación al Entorno</option><option>Motivación</option></select></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><select><option value="">-- Rasgo 2 --</option><option>Previsión</option><option>Asertividad</option><option>Proactividad</option><option>Empatía</option><option>Ética y Credibilidad</option><option>Excelente Comunicación</option><option>Enfoque</option><option>Creatividad</option><option>Adaptación al Entorno</option><option>Motivación</option></select></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><select><option value="">-- Rasgo 3 --</option><option>Previsión</option><option>Asertividad</option><option>Proactividad</option><option>Empatía</option><option>Ética y Credibilidad</option><option>Excelente Comunicación</option><option>Enfoque</option><option>Creatividad</option><option>Adaptación al Entorno</option><option>Motivación</option></select></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><select><option value="">-- Rasgo 4 --</option><option>Previsión</option><option>Asertividad</option><option>Proactividad</option><option>Empatía</option><option>Ética y Credibilidad</option><option>Excelente Comunicación</option><option>Enfoque</option><option>Creatividad</option><option>Adaptación al Entorno</option><option>Motivación</option></select></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                            <td style="padding: 8px; border: 1px solid #cecece;"><input type="text"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 7. EVALUACIÓN FINAL DEL PROCESO -->
+            <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+                <h2 style="margin-top: 0; color: #27186D; font-size: 1.2rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">7. Evaluación Final del Proceso</h2>
+                <p style="font-size: 0.9rem; color: #333333; margin-top: 10px;">Evalúa la experiencia global y efectividad de la dinámica en escala de 1 a 4:</p>
+
+                <div style="margin: 15px 0;">
+                    <label style="margin-right: 20px; cursor: pointer; font-weight: bold; color: #20014D;"><input type="radio" name="ev_proceso" value="1"> 1 Deficiente</label>
+                    <label style="margin-right: 20px; cursor: pointer; font-weight: bold; color: #20014D;"><input type="radio" name="ev_proceso" value="2"> 2 Regular</label>
+                    <label style="margin-right: 20px; cursor: pointer; font-weight: bold; color: #20014D;"><input type="radio" name="ev_proceso" value="3"> 3 Suficiente</label>
+                    <label style="margin-right: 20px; cursor: pointer; font-weight: bold; color: #20014D;"><input type="radio" name="ev_proceso" value="4"> 4 Sobresaliente</label>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <label style="font-size: 0.9rem; font-weight: bold; color: #27186D;">Observaciones generales y sugerencias para el desarrollo del líder:</label>
+                    <textarea rows="4" placeholder="Escribe aquí tus comentarios finales..." style="margin-top: 5px;"></textarea>
+                </div>
+
+                <div style="text-align: center; font-style: italic; color: #27186D; margin-top: 25px; padding: 18px; background: #f8f6fb; border-radius: 8px; border: 1px solid #F3BA37;">
+                    "Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."<br>
+                    <strong>— Henry Ford</strong>
+                </div>
+            </div>
+
+            <button type="button" onclick="alert('¡Respuestas enviadas exitosamente!')" class="btn-submit">
+                Enviar Cuestionario Completado
+            </button>
+        </form>
+    </div>
+
+    <!-- PESTAÑA 4: REPORTE FINAL CON 3 GRÁFICAS DE BARRAS VERTICALES -->
+    <div id="reporte" class="tab-content">
+        
+        <!-- TARJETA 0: PERSONALIZACIÓN -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.35rem; border-bottom: 2px solid #F3BA37; padding-bottom: 8px; display: inline-block;">Personalización del Informe Final</h2>
+            <p style="font-size: 0.9rem; color: #333333; margin-bottom: 20px;">Ingresa los datos generales para parametrizar el informe ejecutivo individualizado.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="font-size: 0.88rem; font-weight: bold; color: #27186D;">Nombre del Evaluado (Coachee):</label>
+                    <input type="text" id="repNombreCoachee" value="Lic. Carlos Mendoza" style="margin-top: 6px;">
+                </div>
+                <div>
+                    <label style="font-size: 0.88rem; font-weight: bold; color: #27186D;">Empresa u Organización:</label>
+                    <input type="text" id="repEmpresaCoachee" value="Grupo Industrial X" style="margin-top: 6px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. DINÁMICA FEEDBACK 360° -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">1. Dinámica Feedback 360°: La Mesa del Rey Arturo</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                La metodología <strong>"La Mesa del Rey Arturo"</strong> es una herramienta de diagnóstico fundamentada en el principio de la mesa redonda: un espacio donde no existen jerarquías visuales ni sesgos de poder. Ofrece al líder una visión panorámica sobre el impacto real de sus decisiones, comportamientos e interacciones cotidianas recabadas desde su entorno (Jefe Directo, RH, Colaboradores y Clientes).
+            </p>
+        </div>
+
+        <!-- 2. PROCESO DE COACHING Y OBJETIVO -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">2. Proceso de Coaching Ejecutivo</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                Intervención profesional personalizada orientada a maximizar el potencial de liderazgo, perfeccionar la toma de decisiones estratégicas y optimizar las relaciones interpersonales. La organización solicitó esta dinámica para acompañar al ejecutivo en el alineamiento de sus competencias con los objetivos corporativos.
+            </p>
+            
+            <div style="background: #f8f6fb; padding: 18px; border-radius: 8px; border: 1px solid #e2d9f3; margin-top: 15px;">
+                <h3 style="margin-top: 0; color: #27186D; font-size: 1.05rem;">2.1 Objetivo de la Dinámica Feedback 360° en el Proceso de Coaching</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #000000; margin: 0;">
+                    Establecer una línea de base objetiva para identificar divergencias o coincidencias entre la autopercepción del Coachee y el juicio consolidado del equipo, estructurando un Plan de Acción Ejecutivo realista y enfocado.
+                </p>
+            </div>
+        </div>
+
+        <!-- 3. ANÁLISIS DE DATOS Y GRÁFICOS VERTICALES -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">3. Análisis de Datos e Interpretación</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                Agrupación confidencial categorizada por Relación Laboral (RH, Jefe Directo, Colaboradores, Clientes):
+            </p>
+
+            <!-- 3.1 RASGOS DE PERSONALIDAD + GRÁFICO BARRA VERTICAL -->
+            <div style="margin-top: 20px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
+                <h3 style="color: #20014D; font-size: 1.1rem; margin-bottom: 8px;">3.1 Rasgos de Personalidad</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #000000;">
+                    Examen descriptivo de las 13 escalas bipolares del comportamiento observadas en la interacción diaria.
+                </p>
+                
+                <div style="background: #fafafa; padding: 20px; border-radius: 8px; border-left: 4px solid #F3BA37; margin-top: 15px;">
+                    <strong style="color: #27186D; font-size: 0.95rem;">3.1.1 Priorización de 3 Rasgos de Personalidad (Textual y Gráfico)</strong>
+                    <p style="font-size: 0.88rem; line-height: 1.55; color: #333333; margin-top: 6px;">
+                        Análisis cualitativo y comparativo entre la autoevaluación del coachee y la media de observadores en los 3 vectores prioritarios:
+                    </p>
+                    
+                    <!-- CANVA GRÁFICO 1 (BARRAS VERTICALES) -->
+                    <div style="max-width: 550px; margin: 20px auto; background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                        <canvas id="chartPersonalidad"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.2 RASGOS DE LIDERAZGO + GRÁFICO BARRA VERTICAL -->
+            <div style="margin-top: 25px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
+                <h3 style="color: #20014D; font-size: 1.1rem; margin-bottom: 8px;">3.2 Rasgos de Liderazgo</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #000000;">
+                    Medición directa de las 10 competencias directivas clave.
+                </p>
+                
+                <div style="background: #fafafa; padding: 20px; border-radius: 8px; border-left: 4px solid #F3BA37; margin-top: 15px;">
+                    <strong style="color: #27186D; font-size: 0.95rem;">3.2.1 Priorización de 4 Rasgos de Liderazgo (Textual y Gráfico)</strong>
+                    <p style="font-size: 0.88rem; line-height: 1.55; color: #333333; margin-top: 6px;">
+                        Vector comparativo de desempeño entre autoevaluación y las ponderaciones por relación laboral:
+                    </p>
+                    
+                    <!-- CANVA GRÁFICO 2 (BARRAS VERTICALES) -->
+                    <div style="max-width: 600px; margin: 20px auto; background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                        <canvas id="chartLiderazgo"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. RECOMENDACIONES -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">4. Recomendaciones para Trabajar en el Proceso de Coaching</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                Directrices estratégicas de acompañamiento individual: desarrollo de hábitos directivos, gestión de presión y alineación organizacional.
+            </p>
+        </div>
+
+        <!-- 5. EVALUACIÓN DEL PROCESO CON GRÁFICA VERTICAL -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">5. Evaluación del Proceso</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                Consolidado de satisfacción global del proceso metodológico. El 92% de los evaluadores coinciden en calificar la dinámica "La Mesa del Rey Arturo" como <strong>Sobresaliente (4/4)</strong> por la claridad, objetividad y practicidad aportada a la cultura organizacional.
+            </p>
+
+            <!-- CANVA GRÁFICO 3 (EVALUACIÓN DEL PROCESO - BARRAS VERTICALES) -->
+            <div style="max-width: 550px; margin: 20px auto; background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <canvas id="chartEvaluacionProceso"></canvas>
+            </div>
+        </div>
+
+        <!-- 6. CONCLUSIÓN -->
+        <div style="background: #ffffff; border-left: 5px solid #20014D; padding: 25px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;">
+            <h2 style="margin-top: 0; color: #27186D; font-size: 1.25rem; border-bottom: 2px solid #F3BA37; padding-bottom: 6px; display: inline-block;">6. Conclusión</h2>
+            <p style="font-size: 0.92rem; line-height: 1.65; color: #000000; margin-top: 10px;">
+                El presente diagnóstico 360° ratifica el compromiso firme de la organización y del evaluado con la búsqueda constante de la excelencia profesional. Con el acompañamiento adecuado en el proceso de Coaching Ejecutivo, el líder cuenta con los elementos necesarios para consolidar sus talentos e impulsar el éxito estratégico de la organización.
+            </p>
+
+            <div style="text-align: center; font-style: italic; color: #27186D; margin-top: 25px; padding: 18px; background: #f8f6fb; border-radius: 8px; border: 1px solid #F3BA37;">
+                "Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."<br>
+                <strong>— Henry Ford</strong>
+            </div>
+        </div>
+
+        <button type="button" onclick="alert('Generando Informe Final Personalizado en PDF...')" class="btn-submit">
+            Descargar Informe Final Personalizado (PDF)
+        </button>
+    </div>
+</main>
+
+<footer>
+    <strong>hvazquez@h-uva.com</strong> | 33 1340 4958
+    <div style="font-size: 0.75rem; color: #27186D; margin-top: 2px;">H-UVA Coaching & Consulting</div>
+</footer>
+
+<script>
+    const usuarios = {
+        "alexis.lobato@h-uva.com": { pass: "H-UVA2026", primerIngreso: true, nombre: "Alexis Lobato", puesto: "Coordinador de Logística" },
+        "hvazquez@h-uva.com": { pass: "H-UVA2026", primerIngreso: true, nombre: "Humberto Vázquez", puesto: "CEO" }
+    };
+    let sesionActiva = null;
+
+    function ejecutarLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById("userEmail").value.toLowerCase();
+        const pass = document.getElementById("userPass").value;
+
+        if (usuarios[email] && usuarios[email].pass === pass) {
+            sesionActiva = usuarios[email];
+            document.getElementById("loginView").classList.remove("active");
+            if (sesionActiva.primerIngreso) {
+                document.getElementById("changePassView").classList.add("active");
+            } else {
+                mostrarPanelAdmin();
+            }
+        } else {
+            alert("Credenciales incorrectas.");
+        }
+    }
+
+    function ejecutarCambioPass(e) {
+        e.preventDefault();
+        const p1 = document.getElementById("newPass").value;
+        const p2 = document.getElementById("confirmPass").value;
+
+        if (p1 !== p2) {
+            alert("Las contraseñas no coinciden.");
+            return;
+        }
+
+        sesionActiva.pass = p1;
+        sesionActiva.primerIngreso = false;
+        alert("¡Contraseña actualizada exitosamente!");
+        document.getElementById("changePassView").classList.remove("active");
+        mostrarPanelAdmin();
+    }
+
+    function mostrarPanelAdmin() {
+        document.getElementById("navTabs").style.display = "flex";
+        document.getElementById("dashboard").classList.add("active");
+        document.getElementById("welcomeMsg").innerText = `Usuario activo: ${sesionActiva.nombre} (${sesionActiva.puesto})`;
+        
+        // Cargar gráficos al entrar
+        setTimeout(renderCharts, 300);
+    }
+
+    function openTab(evt, tabName) {
+        let tabcontent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].classList.remove("active"); }
+        let tablinks = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+        
+        if (tabName === 'reporte') {
+            setTimeout(renderCharts, 100);
+        }
+    }
+
+    // INICIALIZACIÓN DE GRÁFICOS CHART.JS (3 BARRAS VERTICALES)
+    let chart1 = null;
+    let chart2 = null;
+    let chart3 = null;
+
+    function renderCharts() {
+        if(chart1) chart1.destroy();
+        if(chart2) chart2.destroy();
+        if(chart3) chart3.destroy();
+
+        // GRÁFICO 1: PERSONALIDAD (BARRAS VERTICALES)
+        const ctx1 = document.getElementById('chartPersonalidad').getContext('2d');
+        chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Emocionalmente Estable', 'Consciente', 'Emprendedor'],
+                datasets: [{
+                    label: 'Autoevaluación',
+                    data: [3.8, 3.5, 4.0],
+                    backgroundColor: '#F3BA37'
+                }, {
+                    label: 'Promedio Evaluadores',
+                    data: [3.0, 2.8, 3.6],
+                    backgroundColor: '#20014D'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, max: 4 } },
+                plugins: { title: { display: true, text: 'Top 3 Rasgos de Personalidad (Escala 1 a 4)' } }
+            }
+        });
+
+        // GRÁFICO 2: LIDERAZGO (BARRAS VERTICALES)
+        const ctx2 = document.getElementById('chartLiderazgo').getContext('2d');
+        chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Previsión', 'Asertividad', 'Comunicación', 'Enfoque'],
+                datasets: [{
+                    label: 'Autoevaluación',
+                    data: [3.5, 3.8, 4.0, 3.7],
+                    backgroundColor: '#F3BA37'
+                }, {
+                    label: 'Promedio Entorno',
+                    data: [2.9, 3.1, 3.4, 3.2],
+                    backgroundColor: '#20014D'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, max: 4 } },
+                plugins: { title: { display: true, text: 'Top 4 Rasgos de Liderazgo (Escala 1 a 4)' } }
+            }
+        });
+
+        // GRÁFICO 3: EVALUACIÓN DEL PROCESO (BARRAS VERTICALES)
+        const ctx3 = document.getElementById('chartEvaluacionProceso').getContext('2d');
+        chart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['1. Deficiente', '2. Regular', '3. Suficiente', '4. Sobresaliente'],
+                datasets: [{
+                    label: '% de Respuestas',
+                    data: [0, 0, 8, 92],
+                    backgroundColor: ['#c62828', '#f57c00', '#F3BA37', '#20014D']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, max: 100 } },
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Calificación Global de la Dinámica (%)' }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
