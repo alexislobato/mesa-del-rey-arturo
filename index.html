@@ -249,41 +249,51 @@
                         <label style="font-weight: bold; margin-bottom: 8px; display: block;">Enlace Generado para compartir:</label>
                         <div class="link-box" id="enlaceGeneradoBox">https://h-uva.com/evaluacion?evaluar=pendiente</div>
                         <p style="font-size: 13px; color: #666; margin-top: 15px;">
-                            Comparte este enlace con los evaluadores. Al ingresar, indicarán su <b>Nombre, Puesto y Relación con el evaluado (JEFE, RH, COLABORADOR, PAR, CLIENTE)</b> para acceder al cuadernillo.
+                            Comparte este enlace con los evaluadores. Al ingresar, indicarán su <b>Nombre, Puesto y Relación con el evaluado (JEFE, RH, COLABORADOR, PAR, CLIENTE)</b> para acceder al cuadernillo completo.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. CUADERNILLO (APARTADO DE LLENADO) -->
+            <!-- 3. CUADERNILLO (APARTADO DE LLENADO CON RASGOS Y OPCIONES) -->
             <div id="tab-cuadernillo" class="tab-content">
                 <h2>Cuadernillo de Evaluación y Feedback 360°</h2>
-                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Sección interactiva para el registro de apreciaciones y respuestas de los evaluadores.</p>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Sección de llenado interactivo con los apartados del proceso.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 25px; font-size: 14px; line-height: 1.5; color: #333;">
                     <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
                         <h3 style="color: #1f104f; margin-bottom: 8px;">1. Cuadrante III: Área Ciega del Coachee</h3>
                         <p style="margin-bottom: 12px;">
-                            El <b>Área Ciega</b> agrupa aquellas conductas, reacciones o actitudes que los demás perciben con claridad en el líder, pero de las cuales él mismo no es consciente. El propósito de este ejercicio es revelar esas áreas mediante retroalimentación constructiva para alinear la autopercepción con la realidad del equipo.
+                            El <b>Área Ciega</b> agrupa aquellas conductas, reacciones o actitudes que los demás perciben con claridad en el líder, pero de las cuales él mismo no es consciente. El propósito es revelar esas áreas mediante retroalimentación para alinear la autopercepción con la realidad del equipo.
                         </p>
                         <div style="text-align: center; margin: 15px 0;">
-                            <img src="cuadrante.png" alt="Cuadrante III - Área Ciega" style="max-width: 100%; height: auto; max-height: 220px; border-radius: 6px; border: 1px solid #ccc;">
+                            <img src="cuadrante.png" alt="Cuadrante III - Área Ciega" style="max-width: 100%; height: auto; max-height: 200px; border-radius: 6px; border: 1px solid #ccc;">
                         </div>
                     </div>
 
                     <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
                         <h3 style="color: #1f104f; margin-bottom: 8px;">2. Lista de Rasgos de Personalidad</h3>
-                        <p style="margin-bottom: 10px;"><b>2.1 Priorización de los 3 rasgos de mayor importancia en el liderazgo:</b></p>
-                        <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
-                            <li><b>Abierto / Comunicativo:</b> Facilidad para conectar con las personas y transmitir directrices claras.</li>
-                            <li><b>Emocionalmente Estable:</b> Resiliencia y control ante escenarios de alta presión corporativa.</li>
-                            <li><b>Autodisciplinado:</b> Rigor personal, cumplimiento de metas y coherencia con los valores organizacionales.</li>
-                        </ul>
+                        <p style="margin-bottom: 12px;"><b>2.1 Priorización de los 3 rasgos de mayor importancia en el liderazgo:</b> Selecciona o califica la relevancia observada en el líder:</p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="form-group">
+                                <label><b>1. Abierto / Comunicativo</b> (Facilidad para conectar y transmitir directrices)</label>
+                                <select id="c_rasgo1"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label><b>2. Emocionalmente Estable</b> (Resiliencia y control ante escenarios de presión)</label>
+                                <select id="c_rasgo2"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label><b>3. Autodisciplinado</b> (Rigor personal y cumplimiento de metas)</label>
+                                <select id="c_rasgo3"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
                         <h3 style="color: #1f104f; margin-bottom: 8px;">3. Evaluación de Rasgos de Liderazgo</h3>
-                        <p style="margin-bottom: 10px;"><b>3.1 Calificación sobre los 4 Rasgos Clave del Liderazgo:</b></p>
+                        <p style="margin-bottom: 12px;"><b>3.1 Calificación sobre los 4 Rasgos Clave del Liderazgo:</b></p>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                             <div class="form-group"><label>1. Previsión (Visión estratégica)</label><select id="cuad_p1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
                             <div class="form-group"><label>2. Asertividad (Toma de decisiones)</label><select id="cuad_p2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
@@ -293,7 +303,7 @@
                     </div>
 
                     <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
-                        <h3 style="color: #1f104f; margin-bottom: 8px;">4. Evaluación del Proceso y Comentarios</h3>
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">4. Evaluación del Proceso</h3>
                         <div class="form-group">
                             <label>Observaciones generales sobre el liderazgo evaluado:</label>
                             <textarea id="cuad_obs" rows="3" placeholder="Escriba sus observaciones para el Área Ciega..."></textarea>
@@ -347,19 +357,19 @@
                         
                         <div class="chart-vertical-container">
                             <div class="bar-col">
-                                <div class="bar-vertical" id="rep_bar1" style="height: 88%;">8.8</div>
+                                <div class="bar-vertical" style="height: 88%;">8.8</div>
                                 <div class="bar-label">Previsión</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical yellow" id="rep_bar2" style="height: 95%;">9.5</div>
+                                <div class="bar-vertical yellow" style="height: 95%;">9.5</div>
                                 <div class="bar-label">Asertividad</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical" id="rep_bar3" style="height: 82%;">8.2</div>
+                                <div class="bar-vertical" style="height: 82%;">8.2</div>
                                 <div class="bar-label">Empatía</div>
                             </div>
                             <div class="bar-col">
-                                <div class="bar-vertical yellow" id="rep_bar4" style="height: 90%;">9.0</div>
+                                <div class="bar-vertical yellow" style="height: 90%;">9.0</div>
                                 <div class="bar-label">Comunicación</div>
                             </div>
                         </div>
@@ -437,7 +447,6 @@
     </footer>
 
     <script>
-    // Base de datos local simulada en el navegador
     let procesosLideres = JSON.parse(localStorage.getItem('h_uva_procesos')) || [];
 
     window.onload = function() {
@@ -504,7 +513,6 @@
         
         document.getElementById('enlaceGeneradoBox').innerText = enlace;
 
-        // Registrar en el array de procesos para que aparezca en el Panel de Administración en blanco o con 0 evaluadores
         const fechaHoy = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
         
         procesosLideres.push({
@@ -552,20 +560,18 @@
     }
 
     function guardarCuadernilloDashboard() {
-        alert("¡Respuestas del cuadernillo guardadas exitosamente en la plataforma!");
+        alert("¡Respuestas y evaluación del cuadernillo guardadas exitosamente!");
     }
 
     function enviarEvaluacionParticipante() {
         const nombre = document.getElementById('evNombre').value;
         const puesto = document.getElementById('evPuesto').value;
-        const relacion = document.getElementById('evRelacion').value;
 
         if(!nombre || !puesto) {
             alert("Por favor ingrese su nombre y puesto.");
             return;
         }
 
-        // Si hay procesos registrados, agregamos la evaluación al primero o simulamos el registro automático
         if (procesosLideres.length > 0) {
             procesosLideres[0].evaluadoresCount += 1;
             procesosLideres[0].avance = Math.min(100, procesosLideres[0].evaluadoresCount * 25);
