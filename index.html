@@ -17,7 +17,7 @@
             overflow-x: hidden;
         }
 
-        /* Elementos decorativos de fondo (Círculos) */
+        /* Elementos decorativos de fondo */
         .circle-bg {
             position: absolute;
             border-radius: 50%;
@@ -212,18 +212,22 @@
         const email = document.getElementById('correoLogin').value;
         const password = document.getElementById('passLogin').value;
 
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
 
-        if (res.ok) {
-            localStorage.setItem('token', data.token);
-            mostrarDashboard();
-        } else {
-            document.getElementById('respLogin').innerText = data.mensaje;
+            if (res.ok) {
+                localStorage.setItem('token', data.token);
+                mostrarDashboard();
+            } else {
+                document.getElementById('respLogin').innerText = data.mensaje;
+            }
+        } catch (err) {
+            document.getElementById('respLogin').innerText = "Error de conexión con el servidor.";
         }
     }
 
@@ -231,7 +235,10 @@
         document.getElementById('vistaLogin').style.display = 'none';
         document.getElementById('vistaCuestionario').style.display = 'none';
         document.getElementById('vistaDashboard').style.display = 'block';
-        document.getElementById('btnCerrarSesion').style.display = 'block';
+        document.getElementById('btnCerrarSesion').style.display = 'inline-block';
+        
+        // Cambiamos el alino del main para vistas amplias
+        document.querySelector('main').style.alignItems = 'flex-start';
         cargarTabla();
     }
 
@@ -264,6 +271,11 @@
         const data = await res.json();
         const tbody = document.getElementById('tablaDashboard');
         tbody.innerHTML = '';
+
+        if(data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay líderes registrados. Agrega uno arriba para generar su enlace.</td></tr>';
+            return;
+        }
 
         data.forEach(l => {
             tbody.innerHTML += `
