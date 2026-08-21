@@ -1,8 +1,12 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const app = express();
 
 app.use(express.json());
+
+// Servir archivos estáticos (index.html, logo.png, etc.)
+app.use(express.static(path.join(__dirname)));
 
 const SECRET_KEY = "clave_secreta_huva_coaching";
 
@@ -25,6 +29,12 @@ const administradores = [
     }
 ];
 
+// Ruta para cargar la página principal
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Endpoint de login
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
     const admin = administradores.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -51,6 +61,8 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Servidor de H-UVA ejecutándose en http://localhost:3000");
+// Configuración del puerto para Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor de H-UVA ejecutándose en el puerto ${PORT}`);
 });
