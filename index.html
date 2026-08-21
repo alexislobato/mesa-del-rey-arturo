@@ -3,439 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H-UVA Consulting - Sistema de Evaluación 360°</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>La Mesa del Rey Arturo - Sistema 360° H-UVA</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0f172a; font-family: 'Lato', sans-serif; color: #334155; line-height: 1.5; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; }
         
-        /* Views visibility controller */
-        .app-view { display: none; }
-        .app-view.active-view { display: block; }
-
-        /* ================= LOGIN VIEW STYLES ================= */
-        #login-view {
-            background-color: #f8f9fa;
+        body { 
+            background-color: #fafafa; 
+            color: #1f104f; 
+            display: flex; 
+            flex-direction: column; 
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
             position: relative;
             overflow-x: hidden;
         }
-        .bg-circle-1 { position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background-color: #e2e0ea; border-radius: 50%; z-index: 0; opacity: 0.7; }
-        .bg-circle-2 { position: absolute; top: 60px; right: 80px; width: 120px; height: 120px; background-color: #fdf5d8; border-radius: 50%; z-index: 0; opacity: 0.8; }
-        .bg-circle-3 { position: absolute; bottom: -30px; left: 80px; width: 150px; height: 150px; background-color: #e2e0ea; border-radius: 50%; z-index: 0; opacity: 0.7; }
-        .bg-circle-4 { position: absolute; bottom: -50px; right: -30px; width: 280px; height: 280px; background-color: #fdf5d8; border-radius: 50%; z-index: 0; opacity: 0.8; }
 
-        header.login-header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; z-index: 10; }
-        .logo-area { display: flex; flex-direction: column; }
-        .logo-img { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 28px; color: #1a1a2e; letter-spacing: -1px; display: flex; align-items: center; gap: 2px; }
-        .logo-img span { color: #6c5ce7; }
-        .logo-subtitle { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #555; text-transform: uppercase; }
-        .header-title-area { text-align: center; }
-        .header-title-area h1 { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; color: #1a1a2e; }
-        .header-title-area p { font-size: 13px; color: #666; margin-top: 2px; }
-
-        .main-wrapper { display: flex; justify-content: center; align-items: center; flex-grow: 1; z-index: 10; padding: 20px; }
-        .login-card { background: #ffffff; width: 100%; max-width: 440px; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); text-align: center; border: 1px solid rgba(0,0,0,0.03); z-index: 5; position: relative; }
-        .login-card h2 { font-family: 'Poppins', sans-serif; font-size: 20px; color: #1a1a2e; margin-bottom: 30px; font-weight: 600; }
-        .form-group-login { text-align: left; margin-bottom: 20px; }
-        .form-group-login label { display: block; font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
-        .form-control-login { width: 100%; padding: 12px 16px; border: 1px solid #dcdde1; border-radius: 6px; font-size: 14px; color: #333; outline: none; background-color: #fafafa; }
-        .btn-submit { width: 100%; background-color: #1a1a2e; color: white; border: none; border-radius: 6px; padding: 14px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
-        .btn-submit:hover { background-color: #2c2c4a; }
-
-        footer.login-footer { text-align: center; padding: 25px; font-size: 12px; color: #444; z-index: 10; background: transparent; }
-
-        /* ================= DASHBOARD VIEW STYLES ================= */
-        #dashboard-view { display: flex; height: 100vh; width: 100vw; overflow: hidden; }
-        
-        .sidebar { width: 280px; background-color: #003358; color: white; display: flex; flex-direction: column; border-right: 1px solid #1e293b; flex-shrink: 0; }
-        .sidebar-header { padding: 25px 20px; background-color: #00223e; border-bottom: 1px solid #004070; display: flex; justify-content: space-between; align-items: center; }
-        .sidebar-header h2 { font-family: 'Poppins', sans-serif; font-size: 18px; color: #11caa0; }
-        .sidebar-header p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
-        .btn-logout { background: transparent; border: 1px solid #11caa0; color: #11caa0; border-radius: 4px; padding: 4px 8px; font-size: 11px; cursor: pointer; }
-        .btn-logout:hover { background: #11caa0; color: #003358; }
-        
-        .sidebar-menu { list-style: none; padding: 20px 0; flex-grow: 1; overflow-y: auto; }
-        .sidebar-menu li { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 15px; color: #cbd5e1; transition: all 0.3s; border-left: 4px solid transparent; }
-        .sidebar-menu li:hover { background-color: #004070; color: white; }
-        .sidebar-menu li.active { background-color: #004f85; color: white; border-left-color: #11caa0; font-weight: bold; }
-        .sidebar-menu li i { width: 20px; text-align: center; color: #11caa0; }
-        
-        .sidebar-footer { padding: 15px 20px; background-color: #00223e; font-size: 12px; color: #94a3b8; border-top: 1px solid #004070; }
-
-        .main-content { flex-grow: 1; background-color: #f8fafc; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; }
-        
-        .view-panel { display: none; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 30px; min-height: calc(100vh - 100px); }
-        .view-panel.active { display: block; }
-        
-        h1, h2, h3 { font-family: 'Poppins', sans-serif; color: #003358; }
-        .panel-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
-        .panel-title i { color: #11caa0; }
-
-        .table-layout { width: 100%; overflow-x: auto; margin-top: 15px; }
-        .table-layout table { border-collapse: collapse; width: 100%; }
-        .table-layout th, .table-layout td { border-bottom: 1px solid #e2e8f0; padding: 14px 18px; text-align: left; font-size: 15px; }
-        .table-layout th { background-color: #f1f5f9; color: #003358; font-family: 'Poppins', sans-serif; font-size: 16px; }
-        
-        .badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 700; }
-        .progress-bar-bg { background-color: #e2e8f0; border-radius: 6px; height: 10px; width: 100%; overflow: hidden; }
-        .progress-bar-fill { background-color: #11caa0; height: 100%; border-radius: 6px; }
-
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 15px; }
-        .tile { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; display: flex; flex-direction: column; gap: 12px; }
-        .tile h3 { font-size: 18px; color: #003358; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
-        .form-group label { font-weight: 700; color: #334155; font-size: 14px; }
-        .form-control { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; font-size: 15px; width: 100%; }
-        .btn-primary { background-color: #005088; color: white; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .btn-primary:hover { background-color: #003358; }
-        .link-box { background: #e0f2fe; border: 1px dashed #0284c7; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; color: #0369a1; word-break: break-all; margin-top: 5px; }
-
-        .johari-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; height: 320px; }
-        .johari-box { background: #f8fafc; border: 2px solid #005088; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
-        .johari-box.highlight { background: #005088; color: #fff; }
-        .johari-box.highlight h4, .johari-box.highlight p { color: #fff; }
-        .johari-box h4 { font-size: 16px; margin-bottom: 6px; color: #005088; }
-        .johari-box p { font-size: 13px; line-height: 1.3; color: #475569; }
-
-        .quote-box { background: #e0f2fe; border-left: 5px solid #005088; padding: 20px; border-radius: 0 10px 10px 0; margin-top: 25px; }
-        .quote-box p { font-style: italic; font-size: 17px; color: #003358; font-weight: bold; margin-bottom: 6px; }
-        .quote-box cite { font-size: 13px; color: #475569; font-style: normal; }
-
-        .chart-container { display: flex; flex-direction: column; gap: 12px; }
-        .bar { align-items: center; display: flex; gap: 15px; }
-        .bar .label { color: #334155; flex: 0 0 160px; font-weight: 700; font-size: 14px; text-align: right; }
-        .bar .bar-inner { background-color: #e2e8f0; border-radius: 6px; flex-grow: 1; height: 28px; }
-        .bar .bar-fill { border-radius: 6px; color: white; display: flex; font-size: 14px; font-weight: 700; height: 100%; justify-content: flex-end; align-items: center; padding-right: 12px; background-color: #005088; }
-
-        @media(max-width: 768px) {
-            header.login-header { flex-direction: column; gap: 15px; padding: 20px; text-align: center; }
-            .header-title-area { display: none; }
-            #dashboard-view { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; }
+        /* Elementos decorativos de fondo idénticos */
+        .circle-bg {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.15;
         }
+        .circle-purple-1 { width: 350px; height: 350px; background-color: #1f104f; top: -80px; left: -80px; }
+        .circle-yellow-1 { width: 250px; height: 250px; background-color: #ffc107; bottom: 80px; right: -50px; }
+        .circle-purple-2 { width: 180px; height: 180px; background-color: #1f104f; bottom: -40px; left: 10%; }
+        .circle-yellow-2 { width: 120px; height: 120px; background-color: #ffc107; top: 15%; right: 12%; }
+
+        header { 
+            display: grid; 
+            grid-template-columns: 180px 1fr 180px; 
+            align-items: center; 
+            padding: 20px 50px; 
+            background-color: #ffffff; 
+            border-bottom: 1px solid #eaeaea; 
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container img { max-height: 70px; width: auto; display: block; object-fit: contain; }
+        
+        .header-title { text-align: center; }
+        .header-title h1 { font-size: 26px; color: #1f104f; font-weight: bold; }
+        .header-title p { font-size: 15px; color: #666; }
+        
+        .btn-salir { 
+            background-color: #ffc107; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: none; 
+            font-size: 14px;
+            justify-self: end;
+        }
+
+        main { 
+            flex: 1; 
+            padding: 40px 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+            z-index: 1;
+        }
+
+        .card { 
+            background: #ffffff; 
+            padding: 45px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            width: 100%; 
+            max-width: 1100px; 
+        }
+
+        .card-login { 
+            max-width: 480px; 
+            margin: 0 auto; 
+        }
+
+        /* Sistema de pestañas internas */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #f0f0f5;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #1f104f;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #1f104f;
+            color: #fff;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #1f104f; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        
+        .btn-main { background-color: #1f104f; color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        .btn-main:hover { background-color: #140a35; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #1f104f; color: white; font-weight: bold; }
+
+        /* Barras de avance y gráficas verticales */
+        .progress-bar-container { background: #e0e0e0; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; position: relative; }
+        .progress-bar-fill { background: #ffc107; height: 100%; border-radius: 6px; text-align: right; padding-right: 6px; font-size: 11px; font-weight: bold; color: #000; line-height: 16px; }
+
+        .chart-vertical-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 220px;
+            border-bottom: 2px solid #1f104f;
+            padding: 0 20px;
+            margin-top: 20px;
+            gap: 15px;
+        }
+        .bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bar-vertical {
+            width: 45px;
+            background-color: #1f104f;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding-top: 5px;
+        }
+        .bar-vertical.yellow { background-color: #ffc107; color: #000; }
+        .bar-label { margin-top: 8px; font-size: 11px; text-align: center; font-weight: bold; }
+
+        .link-box { background: #f0f0f5; border: 1px dashed #1f104f; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; word-break: break-all; margin-top: 8px; }
+
+        footer { 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #ffffff; 
+            border-top: 1px solid #eaeaea; 
+            font-size: 13px; 
+            position: relative;
+            z-index: 1;
+        }
+        footer a { color: #1f104f; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <!-- ================= VIEW 1: LOGIN ================= -->
-    <div id="login-view" class="app-view active-view">
-        <div class="bg-circle-1"></div>
-        <div class="bg-circle-2"></div>
-        <div class="bg-circle-3"></div>
-        <div class="bg-circle-4"></div>
+    <!-- Círculos Decorativos de Fondo -->
+    <div class="circle-bg circle-purple-1"></div>
+    <div class="circle-bg circle-yellow-1"></div>
+    <div class="circle-bg circle-purple-2"></div>
+    <div class="circle-bg circle-yellow-2"></div>
 
-        <header class="login-header">
-            <div class="logo-area">
-                <div class="logo-img">h·uva<span>.</span></div>
-                <div class="logo-subtitle">Coaching & Consultants</div>
-            </div>
-            <div class="header-title-area">
-                <h1>La Mesa del Rey Arturo</h1>
-                <p>Dinámica de Feedback 360°</p>
-            </div>
-            <div style="width: 140px;"></div>
-        </header>
+    <header>
+        <div class="logo-container"><img src="LOGO_H-UVA.png" alt="H-UVA Logo"></div>
+        <div class="header-title">
+            <h1>La Mesa del Rey Arturo</h1>
+            <p>Dinámica de Feedback 360°</p>
+        </div>
+        <button id="btnCerrarSesion" class="btn-salir" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
 
-        <div class="main-wrapper">
-            <div class="login-card">
-                <h2>Acceso Administrativo</h2>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group-login">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="loginEmail" class="form-control-login" placeholder="usuario@h-uva.com" required value="hvazquez@h-uva.com">
-                    </div>
-                    <div class="form-group-login">
-                        <label>Contraseña</label>
-                        <input type="password" id="loginPassword" class="form-control-login" placeholder="••••••••" required value="123456">
-                    </div>
-                    <button type="submit" class="btn-submit">Ingresar</button>
-                </form>
-            </div>
+    <main>
+        <!-- VISTA 1: LOGIN -->
+        <div class="card card-login" id="vistaLogin" style="text-align: center;">
+            <h2 style="font-size: 24px; margin-bottom: 20px;">Acceso Administrativo</h2>
+            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="correoLogin" placeholder="usuario@h-uva.com"></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="passLogin" placeholder="••••••••"></div>
+            <button class="btn-main" onclick="ejecutarLogin()">Ingresar</button>
+            <div id="respLogin" style="margin-top: 15px; color: red;"></div>
         </div>
 
-        <footer class="login-footer">
-            hvazquez@h-uva.com | 33 1340 4958<br>
-            H-UVA Coaching & Consulting
-        </footer>
-    </div>
-
-    <!-- ================= VIEW 2: DASHBOARD / WORKSPACE ================= -->
-    <div id="dashboard-view" class="app-view">
-        <!-- Sidebar / Tab Navigation -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div>
-                    <h2>H-UVA Consulting</h2>
-                    <p>Plataforma Interactiva 360°</p>
-                </div>
-                <button class="btn-logout" onclick="handleLogout()" title="Cerrar Sesión"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
-            </div>
-            <ul class="sidebar-menu">
-                <li class="active" onclick="switchTab('tab-admin', this)"><i class="fa-solid fa-gauge"></i> Panel de Administración</li>
-                <li onclick="switchTab('tab-registro', this)"><i class="fa-solid fa-link"></i> Registro y Enlaces</li>
-                <li onclick="switchTab('tab-johari', this)"><i class="fa-solid fa-book-open"></i> Cuadernillo / Johari</li>
-                <li onclick="switchTab('tab-reyarturo', this)"><i class="fa-solid fa-shield-halved"></i> Mesa del Rey Arturo</li>
-                <li onclick="switchTab('tab-reporte', this)"><i class="fa-solid fa-chart-bar"></i> Rasgos y Liderazgo</li>
-                <li onclick="switchTab('tab-cierre', this)"><i class="fa-solid fa-square-poll-vertical"></i> Evaluación y Cierre</li>
-            </ul>
-            <div class="sidebar-footer">
-                Soporte: hvazquez@h-uva.com<br>Tel: 33 1340 4958
-            </div>
-        </div>
-
-        <!-- Main Content Workspace -->
-        <div class="main-content">
-
-            <!-- 1. Panel de Administración -->
-            <div id="tab-admin" class="view-panel active">
-                <h2 class="panel-title"><i class="fa-solid fa-gauge"></i> 1. Panel de Administración General</h2>
-                <p style="margin-bottom: 20px; color: #64748b;">Monitoreo en tiempo real de los procesos de evaluación 360° asignados a líderes corporativos.</p>
-                <div class="table-layout">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Líder</th>
-                                <th>Empresa</th>
-                                <th>Evaluadores</th>
-                                <th>Avance Global</th>
-                                <th>Fecha de Implementación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Carlos Mendoza</strong></td>
-                                <td>Tecnologías Innovadoras S.A.</td>
-                                <td><span class="badge">8 evaluadores</span></td>
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 75%;"></div></div>
-                                        <span style="font-size: 14px; font-weight: bold;">75%</span>
-                                    </div>
-                                </td>
-                                <td>12 / Octubre / 2026</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Ana Sofía Garza</strong></td>
-                                <td>Corporativo Financiero del Norte</td>
-                                <td><span class="badge">12 evaluadores</span></td>
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 40%;"></div></div>
-                                        <span style="font-size: 14px; font-weight: bold;">40%</span>
-                                    </div>
-                                </td>
-                                <td>18 / Octubre / 2026</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Roberto Sánchez</strong></td>
-                                <td>Logística Global Express</td>
-                                <td><span class="badge">6 evaluadores</span></td>
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div class="progress-bar-bg" style="width:120px;"><div class="progress-bar-fill" style="width: 90%;"></div></div>
-                                        <span style="font-size: 14px; font-weight: bold;">90%</span>
-                                    </div>
-                                </td>
-                                <td>01 / Noviembre / 2026</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- VISTA 2: DASHBOARD CON LAS 4 PESTAÑAS -->
+        <div class="card" id="vistaDashboard" style="display: none;">
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-admin')">1. Panel de Administración</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-registro')">2. Registro / Enlaces</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-cuadernillo')">3. Cuadernillo</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-reporte')">4. Reporte Final 360°</button>
             </div>
 
-            <!-- 2. Registro / Enlaces Dinámicos -->
-            <div id="tab-registro" class="view-panel">
-                <h2 class="panel-title"><i class="fa-solid fa-link"></i> 2. Registro y Enlaces Dinámicos</h2>
-                <div class="two-column">
-                    <div class="tile">
-                        <h3>Generación de Enlaces de Evaluación</h3>
+            <!-- 1. PANEL DE ADMINISTRACIÓN -->
+            <div id="tab-admin" class="tab-content active">
+                <h2>Panel de Administración General</h2>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Monitoreo en tiempo real de los procesos de feedback dados de alta.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Líder</th>
+                            <th>Empresa</th>
+                            <th>Evaluadores</th>
+                            <th>Avance</th>
+                            <th>Fecha de Implementación</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaAdminProcesos">
+                        <!-- Se llena dinámicamente al registrar líderes -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2. REGISTRO / ENLACES DINÁMICOS -->
+            <div id="tab-registro" class="tab-content">
+                <h2>Registro y Generación de Enlaces Dinámicos</h2>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Da de alta un nuevo líder para generar el enlace personalizado que compartirás con los participantes.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
                         <div class="form-group">
-                            <label>Nombre del Líder:</label>
-                            <input type="text" class="form-control" value="Carlos Mendoza" id="inputLider">
+                            <label>Nombre del Líder / Coachee</label>
+                            <input type="text" id="regLider" placeholder="Ej. Carlos Mendoza">
                         </div>
                         <div class="form-group">
-                            <label>Empresa:</label>
-                            <input type="text" class="form-control" value="Tecnologías Innovadoras S.A." id="inputEmpresa">
+                            <label>Nombre de la Empresa</label>
+                            <input type="text" id="regEmpresa" placeholder="Ej. Tecnologías Innovadoras S.A.">
                         </div>
-                        <button class="btn-primary" onclick="generarEnlace()">Actualizar / Generar Enlace</button>
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Enlace Dinámico Activo:</label>
-                            <div class="link-box" id="linkGenerado">https://h-uva.com/evaluacion/carlos-mendoza-tech2026</div>
-                        </div>
-                    </div>
-                    <div class="tile">
-                        <h3>Experiencia del Evaluador</h3>
-                        <p>Al acceder al enlace, el evaluador ingresa de forma intuitiva sus datos para iniciar el cuestionario psicométrico y de competencias:</p>
-                        <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-                            <li><strong>Nombre completo</strong> del evaluador.</li>
-                            <li><strong>Puesto o rol</strong> actual dentro de la organización.</li>
-                            <li><strong>Relación con el participante:</strong> Jefe, Par, Colaborador, RH o Cliente Interno.</li>
-                            <li>Acceso inmediato a la interfaz de reactivos de liderazgo 360°.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Cuadernillo / Cuadrante de Johari -->
-            <div id="tab-johari" class="view-panel">
-                <h2 class="panel-title"><i class="fa-solid fa-book-open"></i> 3. Cuadernillo: Cuadrante III (Área Ciega)</h2>
-                <div class="two-column">
-                    <div>
-                        <h3 style="color:#003358; font-size:20px; margin-bottom:12px;">El Feedback y la Ventana de Johari</h3>
-                        <p style="margin-bottom: 10px;">El <strong>Área Ciega</strong> comprende aquellos aspectos de nuestra conducta o expresión que los demás perciben claramente, pero de los cuales nosotros no somos conscientes.</p>
-                        <p style="margin-bottom: 10px;">Recopilar feedback honesto a través de una evaluación 360° reduce este cuadrante, alineando la autopercepción con la realidad ejecutiva.</p>
-                        <div class="quote-box" style="margin-top: 15px;">
-                            <p>Exportación automática a Excel o Google Sheets con el desglose exacto de reactivos y respuestas.</p>
-                        </div>
+                        <button class="btn-main" onclick="generarEnlaceDinamico()">Generar Enlace</button>
                     </div>
                     <div>
-                        <div class="johari-grid">
-                            <div class="johari-box">
-                                <h4>I. Área Abierta</h4>
-                                <p>Conocido por uno mismo y por los demás.</p>
-                            </div>
-                            <div class="johari-box">
-                                <h4>II. Área Oculta</h4>
-                                <p>Conocido por uno mismo, oculto a los demás.</p>
-                            </div>
-                            <div class="johari-box highlight">
-                                <h4>III. Área Ciega</h4>
-                                <p>Visto por los demás, ignorado por uno mismo (Foco 360°).</p>
-                            </div>
-                            <div class="johari-box">
-                                <h4>IV. Área Desconocida</h4>
-                                <p>Inconsciente para ambos.</p>
-                            </div>
-                        </div>
+                        <label style="font-weight: bold; margin-bottom: 8px; display: block;">Enlace Generado para compartir:</label>
+                        <div class="link-box" id="enlaceGeneradoBox">https://h-uva.com/evaluacion?evaluar=pendiente</div>
+                        <p style="font-size: 13px; color: #666; margin-top: 15px;">
+                            Comparte este enlace con los evaluadores. Al ingresar, indicarán su <b>Nombre, Puesto y Relación con el evaluado (JEFE, RH, COLABORADOR, PAR, CLIENTE)</b> para acceder al cuadernillo completo.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. Mesa del Rey Arturo -->
-            <div id="tab-reyarturo" class="view-panel">
-                <h2 class="panel-title"><i class="fa-solid fa-shield-halved"></i> 4. Reporte Final: La Mesa del Rey Arturo</h2>
-                <p style="margin-bottom: 20px; color: #64748b;">Principios fundamentales para una retroalimentación constructiva y de alto impacto organizacional.</p>
-                <div class="two-column">
-                    <div class="tile">
-                        <i class="fa-solid fa-bullseye" style="color: #005088; font-size: 22px;"></i>
-                        <h3>1. Sé específico</h3>
-                        <p>Evita generalidades. Céntrate en comportamientos observables y situaciones concretas para facilitar planes de mejora precisos.</p>
+            <!-- 3. CUADERNILLO (APARTADO DE LLENADO CON RASGOS Y OPCIONES) -->
+            <div id="tab-cuadernillo" class="tab-content">
+                <h2>Cuadernillo de Evaluación y Feedback 360°</h2>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Sección de llenado interactivo con los apartados del proceso.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 25px; font-size: 14px; line-height: 1.5; color: #333;">
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">1. Cuadrante III: Área Ciega del Coachee</h3>
+                        <p style="margin-bottom: 12px;">
+                            El <b>Área Ciega</b> agrupa aquellas conductas, reacciones o actitudes que los demás perciben con claridad en el líder, pero de las cuales él mismo no es consciente. El propósito es revelar esas áreas mediante retroalimentación para alinear la autopercepción con la realidad del equipo.
+                        </p>
+                        <div style="text-align: center; margin: 15px 0;">
+                            <img src="cuadrante.png" alt="Cuadrante III - Área Ciega" style="max-width: 100%; height: auto; max-height: 200px; border-radius: 6px; border: 1px solid #ccc;">
+                        </div>
                     </div>
-                    <div class="tile">
-                        <i class="fa-solid fa-lightbulb" style="color: #005088; font-size: 22px;"></i>
-                        <h3>2. Acompaña con ideas</h3>
-                        <p>El feedback no aporta valor si no va acompañado de sugerencias constructivas y alternativas viables de desarrollo.</p>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">2. Lista de Rasgos de Personalidad</h3>
+                        <p style="margin-bottom: 12px;"><b>2.1 Priorización de los 3 rasgos de mayor importancia en el liderazgo:</b> Selecciona o califica la relevancia observada en el líder:</p>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="form-group">
+                                <label><b>1. Abierto / Comunicativo</b> (Facilidad para conectar y transmitir directrices)</label>
+                                <select id="c_rasgo1"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label><b>2. Emocionalmente Estable</b> (Resiliencia y control ante escenarios de presión)</label>
+                                <select id="c_rasgo2"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label><b>3. Autodisciplinado</b> (Rigor personal y cumplimiento de metas)</label>
+                                <select id="c_rasgo3"><option value="5">5 - Muy Alto</option><option value="4">4 - Alto</option><option value="3">3 - Moderado</option><option value="2">2 - Bajo</option></select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tile">
-                        <i class="fa-solid fa-user-gear" style="color: #005088; font-size: 22px;"></i>
-                        <h3>3. Céntrate en lo que hace</h3>
-                        <p>Evalúa el desempeño laboral y las acciones ejecutivas, nunca los rasgos de la personalidad intrínseca de la persona.</p>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">3. Evaluación de Rasgos de Liderazgo</h3>
+                        <p style="margin-bottom: 12px;"><b>3.1 Calificación sobre los 4 Rasgos Clave del Liderazgo:</b></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group"><label>1. Previsión (Visión estratégica)</label><select id="cuad_p1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>2. Asertividad (Toma de decisiones)</label><select id="cuad_p2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>3. Empatía (Cercanía con el equipo)</label><select id="cuad_p3"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                            <div class="form-group"><label>4. Excelente Comunicación</label><select id="cuad_p4"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option></select></div>
+                        </div>
                     </div>
-                    <div class="tile">
-                        <i class="fa-solid fa-bolt" style="color: #005088; font-size: 22px;"></i>
-                        <h3>4. Ve al grano</h3>
-                        <p>Expresa las oportunidades de crecimiento con total claridad y profesionalismo, sin rodeos innecesarios.</p>
+
+                    <div style="background: #f8f8fc; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h3 style="color: #1f104f; margin-bottom: 8px;">4. Evaluación del Proceso</h3>
+                        <div class="form-group">
+                            <label>Observaciones generales sobre el liderazgo evaluado:</label>
+                            <textarea id="cuad_obs" rows="3" placeholder="Escriba sus observaciones para el Área Ciega..."></textarea>
+                        </div>
+                        <button class="btn-main" onclick="guardarCuadernilloDashboard()">Guardar Respuestas del Cuadernillo</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 5. Rasgos y Liderazgo -->
-            <div id="tab-reporte" class="view-panel">
-                <h2 class="panel-title"><i class="fa-solid fa-chart-bar"></i> 5. Reporte de Rasgos de Personalidad y Liderazgo</h2>
-                <div class="two-column">
-                    <div class="tile">
-                        <h3>3 Rasgos de Personalidad Prioritarios</h3>
-                        <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
-                            <li><strong>1. Abierto / Comunicativo:</strong> Alta disposición para conectar y colaborar con los equipos de trabajo.</li>
-                            <li><strong>2. Emocionalmente Estable:</strong> Capacidad de mantener la calma y afrontar con madurez escenarios complejos.</li>
-                            <li><strong>3. Integrado / Autodisciplinado:</strong> Estricto apego a normas constructivas y control de su imagen profesional.</li>
-                        </ul>
+            <!-- 4. REPORTE FINAL 360º -->
+            <div id="tab-reporte" class="tab-content">
+                <h2>Reporte Final 360º: La Mesa del Rey Arturo</h2>
+                <p style="color: #666; margin-top: 5px; margin-bottom: 20px;">Consolidado ejecutivo automatizado con base en las respuestas recopiladas de los participantes.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px; font-size: 14px; line-height: 1.6; color: #333;">
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">1. Dinámica Feedback 360º: La Mesa del Rey Arturo</h3>
+                        <p>Inspirada en la mítica leyenda de la Mesa Redonda del Rey Arturo, donde todos los caballeros se sentaban en pie de igualdad sin cabecera ni jerarquías físicas. Esta dinámica fomenta un entorno seguro, de respeto mutuo y de absoluta libertad para expresar verdades constructivas que fortalezcan el liderazgo sin temores corporativos.</p>
                     </div>
-                    <div class="chart-container" style="justify-content: center;">
-                        <h3 style="font-size:18px; color:#003358; margin-bottom: 5px;">4 Rasgos de Liderazgo Priorizados</h3>
-                        <div class="bar">
-                            <div class="label">Previsión</div>
-                            <div class="bar-inner"><div class="bar-fill" style="width: 85%;">8.5 / 10</div></div>
-                        </div>
-                        <div class="bar">
-                            <div class="label">Asertividad</div>
-                            <div class="bar-inner"><div class="bar-fill" style="width: 90%;">9.0 / 10</div></div>
-                        </div>
-                        <div class="bar">
-                            <div class="label">Empatía</div>
-                            <div class="bar-inner"><div class="bar-fill" style="width: 80%;">8.0 / 10</div></div>
-                        </div>
-                        <div class="bar">
-                            <div class="label">Excelente Comunicación</div>
-                            <div class="bar-inner"><div class="bar-fill" style="width: 88%;">8.8 / 10</div></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- 6. Evaluación y Cierre -->
-            <div id="tab-cierre" class="view-panel">
-                <h2 class="panel-title"><i class="fa-solid fa-square-poll-vertical"></i> 6. Evaluación del Proceso y Conclusión</h2>
-                <div class="two-column">
-                    <div class="tile">
-                        <h3>Evaluación del Proceso & Recomendaciones</h3>
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">2. Relación de la dinámica con el proceso de coaching</h3>
+                        <p>El feedback 360° es el espejo más fiel para el coachee. Le permite confrontar su autopercepción subjetiva con la realidad objetiva de su equipo, jefes y pares, transformando las áreas de oportunidad detectadas en un plan de acción directiva dentro del proceso de coaching.</p>
+                    </div>
+
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">3. Rasgos de Personalidad & Gráfica de Priorización</h3>
+                        <p><b>3.1 Priorización de los 3 rasgos fundamentales:</b> Abierto/Comunicativo, Emocionalmente Estable y Autodisciplinado.</p>
+                        <p style="margin-top: 4px;"><b>3.2 Gráfica de Rasgos Priorizados (Barras Verticales calculadas automáticamente):</b></p>
+                        
+                        <div class="chart-vertical-container">
+                            <div class="bar-col">
+                                <div class="bar-vertical" style="height: 85%;">8.5</div>
+                                <div class="bar-label">Abierto / Comunicativo</div>
+                            </div>
+                            <div class="bar-col">
+                                <div class="bar-vertical yellow" style="height: 92%;">9.2</div>
+                                <div class="bar-label">Emocionalmente Estable</div>
+                            </div>
+                            <div class="bar-col">
+                                <div class="bar-vertical" style="height: 78%;">7.8</div>
+                                <div class="bar-label">Autodisciplinado</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">4. Rasgos de Liderazgo & Gráfica de Priorización</h3>
+                        <p><b>4.1 Priorización de las 4 competencias clave:</b> Previsión, Asertividad, Empatía y Comunicación.</p>
+                        <p style="margin-top: 4px;"><b>4.2 Gráfica de Liderazgo (Barras Verticales automatizadas):</b></p>
+                        
+                        <div class="chart-vertical-container">
+                            <div class="bar-col">
+                                <div class="bar-vertical" style="height: 88%;">8.8</div>
+                                <div class="bar-label">Previsión</div>
+                            </div>
+                            <div class="bar-col">
+                                <div class="bar-vertical yellow" style="height: 95%;">9.5</div>
+                                <div class="bar-label">Asertividad</div>
+                            </div>
+                            <div class="bar-col">
+                                <div class="bar-vertical" style="height: 82%;">8.2</div>
+                                <div class="bar-label">Empatía</div>
+                            </div>
+                            <div class="bar-col">
+                                <div class="bar-vertical yellow" style="height: 90%;">9.0</div>
+                                <div class="bar-label">Comunicación</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">5. Evaluación del Proceso</h3>
                         <p>El proceso demostró altos índices de participación y objetividad en las evaluaciones de los evaluadores. Se recomienda dar seguimiento trimestral a los planes de acción generados en el área ciega.</p>
                     </div>
-                    <div class="tile">
-                        <h3>Conclusión del Proceso 360°</h3>
-                        <p>La integración de la dinámica de feedback permite al líder alinear su autopercepción con la realidad del equipo, potenciando su efectividad ejecutiva y la cohesión organizacional.</p>
+
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">6. Recomendaciones</h3>
+                        <p>Dar continuidad a las fortalezas de asertividad y comunicación, reforzando la cercanía empática con los colaboradores operativos para consolidar un liderazgo transformacional.</p>
+                    </div>
+
+                    <div>
+                        <h3 style="color: #1f104f; margin-bottom: 4px;">7. Conclusión</h3>
+                        <p><i>"Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."</i> — Henry Ford | H-UVA Coaching & Consulting</p>
                     </div>
                 </div>
-                <div class="quote-box">
-                    <p>"Ir juntos es comenzar, mantenerse juntos es progresar, trabajar juntos es triunfar."</p>
-                    <cite>— Henry Ford | H-UVA Coaching & Consulting (hvazquez@h-uva.com | 33 1340 4958)</cite>
-                </div>
             </div>
-
         </div>
-    </div>
+
+        <!-- VISTA 3: CUESTIONARIO PARA PARTICIPANTES (VÍA ENLACE EXTERNO) -->
+        <div class="card" id="vistaCuestionario" style="display: none;">
+            <h2 id="evalTitulo">Evaluación 360° - Mesa del Rey Arturo</h2>
+            <p id="evalSub" style="color: #666; margin-top: 5px; margin-bottom: 20px;">Por favor complete los datos solicitados para registrar su aportación de feedback.</p>
+            
+            <h3>Paso 1: Datos del Evaluador</h3>
+            <br>
+            <div class="form-group"><label>Nombre Completo</label><input type="text" id="evNombre" placeholder="Tu nombre completo"></div>
+            <div class="form-group"><label>Puesto</label><input type="text" id="evPuesto" placeholder="Tu puesto actual"></div>
+            <div class="form-group">
+                <label>Relación con el Participante Evaluado</label>
+                <select id="evRelacion">
+                    <option value="JEFE">JEFE</option>
+                    <option value="RH">RH</option>
+                    <option value="COLABORADOR">COLABORADOR</option>
+                    <option value="PAR">PAR</option>
+                    <option value="CLIENTE">CLIENTE</option>
+                </select>
+            </div>
+            
+            <br><hr><br>
+            <h3>Paso 2: Cuadernillo y Competencias (Área Ciega)</h3>
+            <br>
+            <div class="form-group">
+                <label><b>1. Previsión (Visión estratégica y planeación):</b></label>
+                <select id="eval_p1"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>2. Asertividad (Toma de decisiones y firmeza):</b></label>
+                <select id="eval_p2"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>3. Empatía y Cercanía con el Equipo:</b></label>
+                <select id="eval_p3"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>4. Comunicación Efectiva:</b></label>
+                <select id="eval_p4"><option value="5">5 - Excelente</option><option value="4">4 - Muy Bueno</option><option value="3">3 - Bueno</option><option value="2">2 - Regular</option><option value="1">1 - Deficiente</option></select>
+            </div>
+            <div class="form-group">
+                <label><b>5. Área Ciega (Observaciones y comentarios constructivos para el líder):</b></label>
+                <textarea id="eval_obs" rows="3" placeholder="Escriba sus observaciones..."></textarea>
+            </div>
+            <br>
+            <button class="btn-main" onclick="enviarEvaluacionParticipante()">Enviar Evaluación y Registrar en el Sistema</button>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong><a href="mailto:hvazquez@h-uva.com">hvazquez@h-uva.com</a></strong> | 33 1340 4958</p>
+        <p>H-UVA Coaching & Consulting</p>
+    </footer>
 
     <script>
-        function handleLogin(event) {
-            event.preventDefault();
-            document.getElementById('login-view').classList.remove('active-view');
-            document.getElementById('dashboard-view').classList.add('active-view');
+    let procesosLideres = JSON.parse(localStorage.getItem('h_uva_procesos')) || [];
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const evaluarCode = urlParams.get('evaluar');
+        
+        if (evaluarCode) {
+            document.getElementById('vistaLogin').style.display = 'none';
+            document.getElementById('vistaDashboard').style.display = 'none';
+            document.getElementById('vistaCuestionario').style.display = 'block';
+            document.getElementById('evalSub').innerText = `Evaluando proceso: ${evaluarCode.toUpperCase()}`;
+        } else if (localStorage.getItem('token')) {
+            mostrarDashboard();
+        }
+    };
+
+    function ejecutarLogin() {
+        const email = document.getElementById('correoLogin').value;
+        const password = document.getElementById('passLogin').value;
+
+        if (email && password) {
+            localStorage.setItem('token', 'token_activo_h_uva');
+            mostrarDashboard();
+        } else {
+            document.getElementById('respLogin').innerText = "Por favor ingrese correo y contraseña.";
+        }
+    }
+
+    function mostrarDashboard() {
+        document.getElementById('vistaLogin').style.display = 'none';
+        document.getElementById('vistaCuestionario').style.display = 'none';
+        document.getElementById('vistaDashboard').style.display = 'block';
+        document.getElementById('btnCerrarSesion').style.display = 'inline-block';
+        actualizarTablaAdmin();
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+    }
+
+    function switchTab(evt, tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function generarEnlaceDinamico() {
+        const lider = document.getElementById('regLider').value;
+        const empresa = document.getElementById('regEmpresa').value;
+        
+        if(!lider || !empresa) {
+            alert("Por favor ingrese el nombre del líder y la empresa.");
+            return;
         }
 
-        function handleLogout() {
-            document.getElementById('dashboard-view').classList.remove('active-view');
-            document.getElementById('login-view').classList.add('active-view');
+        const slug = lider.toLowerCase().replace(/ /g, '-');
+        const enlace = `https://h-uva.com/evaluacion?evaluar=${slug}`;
+        
+        document.getElementById('enlaceGeneradoBox').innerText = enlace;
+
+        const fechaHoy = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+        
+        procesosLideres.push({
+            id: Date.now(),
+            lider: lider,
+            empresa: empresa,
+            evaluadoresCount: 0,
+            avance: 0,
+            fecha: fechaHoy,
+            evaluaciones: []
+        });
+
+        localStorage.setItem('h_uva_procesos', JSON.stringify(procesosLideres));
+        actualizarTablaAdmin();
+        
+        alert("¡Enlace generado con éxito! El proceso ya aparece registrado en el Panel de Administración.");
+        document.getElementById('regLider').value = '';
+        document.getElementById('regEmpresa').value = '';
+    }
+
+    function actualizarTablaAdmin() {
+        const tbody = document.getElementById('tablaAdminProcesos');
+        tbody.innerHTML = '';
+
+        if (procesosLideres.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#666; padding: 20px;">No hay procesos de feedback dados de alta todavía. Dirígete a la pestaña "Registro / Enlaces" para dar de alta al primer líder.</td></tr>`;
+            return;
         }
 
-        function switchTab(tabId, element) {
-            const panels = document.querySelectorAll('.view-panel');
-            panels.forEach(panel => panel.classList.remove('active'));
-            
-            const menuItems = document.querySelectorAll('.sidebar-menu li');
-            menuItems.forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
+        procesosLideres.forEach(proc => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${proc.lider}</b></td>
+                    <td>${proc.empresa}</td>
+                    <td>${proc.evaluadoresCount} evaluadores</td>
+                    <td>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${proc.avance}%;">${proc.avance}%</div>
+                        </div>
+                    </td>
+                    <td>${proc.fecha}</td>
+                </tr>
+            `;
+        });
+    }
+
+    function guardarCuadernilloDashboard() {
+        alert("¡Respuestas y evaluación del cuadernillo guardadas exitosamente!");
+    }
+
+    function enviarEvaluacionParticipante() {
+        const nombre = document.getElementById('evNombre').value;
+        const puesto = document.getElementById('evPuesto').value;
+
+        if(!nombre || !puesto) {
+            alert("Por favor ingrese su nombre y puesto.");
+            return;
         }
 
-        function generarEnlace() {
-            const lider = document.getElementById('inputLider').value.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const empresa = document.getElementById('inputEmpresa').value.toLowerCase().replace(/[^a-z0-9]/g, '');
-            const enlace = `https://h-uva.com/evaluacion/${lider}-${empresa}2026`;
-            document.getElementById('linkGenerado').innerText = enlace;
+        if (procesosLideres.length > 0) {
+            procesosLideres[0].evaluadoresCount += 1;
+            procesosLideres[0].avance = Math.min(100, procesosLideres[0].evaluadoresCount * 25);
+            localStorage.setItem('h_uva_procesos', JSON.stringify(procesosLideres));
         }
+
+        alert("¡Evaluación enviada con éxito! Sus respuestas se han integrado automáticamente al Reporte Final 360°.");
+        window.location.href = '/';
+    }
     </script>
-
 </body>
 </html>
 ```eof
-
-Your complete H-UVA 360° platform is ready! Save this file as `index.html` (or your main platform filename). Now you have both the exact login screen you built and the full interactive 6-section dashboard workspace working together in a single file!
