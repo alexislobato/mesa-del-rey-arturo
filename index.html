@@ -870,4 +870,38 @@
 </script>
 
 </body>
-</html>
+</html>// Función para iniciar sesión
+async function ingresar() {
+    const email = document.getElementById('correo').value;
+    const password = document.getElementById('password').value;
+    const respuestaDiv = document.getElementById('respuesta');
+
+    const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        // Guardamos el token en el navegador
+        localStorage.setItem('token', data.token);
+        
+        // Cambiamos el contenido para mostrar la bienvenida y el botón de cerrar sesión
+        document.querySelector('.login-card').innerHTML = `
+            <h2>¡Bienvenido, ${data.usuario.nombre}!</h2>
+            <p>Puesto: ${data.usuario.puesto}</p>
+            <button onclick="cerrarSesion()" style="background-color: #d9534f; margin-top: 15px;">Cerrar Sesión</button>
+        `;
+    } else {
+        respuestaDiv.style.color = "red";
+        respuestaDiv.innerText = data.mensaje;
+    }
+}
+
+// Función para cerrar sesión
+function cerrarSesion() {
+    localStorage.removeItem('token');
+    window.location.reload(); // Recarga la página para volver al inicio
+}
